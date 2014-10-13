@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Circular</title>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/page.css" rel="stylesheet">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="page-header">
+      <h2>
+        Circular
+        <small><a href="https://github.com/andrepolischuk/circular">Github</a></small>
+      </h2>
+    </div>
+
+    <div class="row">
+
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+        
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div id="circular">
+              <img data-src="images/00.jpg">
+              <img data-src="images/01.jpg">
+              <img data-src="images/02.jpg">
+              <img data-src="images/03.jpg">
+              <img data-src="images/04.jpg">
+              <img data-src="images/05.jpg">
+              <img data-src="images/06.jpg">
+              <img data-src="images/07.jpg">
+              <img data-src="images/08.jpg">
+              <img data-src="images/09.jpg">
+              <img data-src="images/10.jpg">
+              <img data-src="images/11.jpg">
+              <img data-src="images/12.jpg">
+              <img data-src="images/13.jpg">
+              <img data-src="images/14.jpg">
+              <img data-src="images/15.jpg">
+              <div id="loader"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 text-center">
+          <h4>Цикличность</h4>
+          <p>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default" onclick="circular.set({ cycle : false });">
+                <input type="radio" name="vertical"> Нет
+              </label>
+              <label class="btn btn-default active" onclick="circular.set({ cycle : true });">
+                <input type="radio" name="vertical" checked> Да
+              </label>
+            </div>
+          </p>
+        </div>
+
+        <div class="col-sm-3 text-center">
+          <h4>Реверс</h4>
+          <p>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default active" onclick="circular.set({ reverse : false });">
+                <input type="radio" name="vertical" checked> Нет
+              </label>
+              <label class="btn btn-default" onclick="circular.set({ reverse : true });">
+                <input type="radio" name="vertical"> Да
+              </label>
+            </div>
+          </p>
+        </div>
+
+        <div class="col-sm-6 text-center">
+          <h4>Ориентация</h4>
+          <p>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default active" onclick="circular.set({ vertical : false });">
+                <input type="radio" name="vertical" checked> Горизонтально
+              </label>
+              <label class="btn btn-default" onclick="circular.set({ vertical : true });">
+                <input type="radio" name="vertical"> Вертикально
+              </label>
+            </div>
+          </p>
+        </div>
+        
+        <div class="col-sm-6 text-center">
+          <h4>Анимированный поворот</h4>
+          <p>
+            <a href="#" class="btn btn-default" onclick="circular.turn(9); return false;">К десятому кадру</a>
+            <a href="#" class="btn btn-default" onclick="circular.turn(0); return false;">К первому</a>
+          </p>
+        </div>
+
+        <div class="col-sm-6 text-center">
+          <h4>Показать</h4>
+          <p>
+            <a href="#" class="btn btn-default" onclick="circular.go(9); return false;">Десятый кадр</a>
+            <a href="#" class="btn btn-default" onclick="circular.go(0); return false;">Первый</a>
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+    
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="js/circular.min.js"></script>
+
+  <script type="text/javascript">
+    var circular = new Circular('circular', {
+      scroll : true,
+      cycle  : true,
+      loader : 'loader'
+    });
+  </script>
+
+</body>
+</html>

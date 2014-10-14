@@ -24,7 +24,7 @@
   <div id="loader"></div>
 </div>
 ...
-<script src="/static/js/circular.min.js">
+<script src="/static/js/circular.min.js"></script>
 ```
 
 ## Initialization

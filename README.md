@@ -32,7 +32,7 @@
   Create object with parameters:
 
 ```js
-var circular = new Circular(element, options);
+var crl = circular(element, options);
 ```
 
 ### element
@@ -44,7 +44,7 @@ var circular = new Circular(element, options);
   Parameters object
 
 #### options.mouse
-  
+
   Rotation via mouse moves (default `true`)
 
 #### options.scroll
@@ -85,31 +85,31 @@ var circular = new Circular(element, options);
 
 ## API
 
-### circular.el
+### crl.el
 
   Return object DOM node
 
-### circular.length
+### crl.length
 
   Return object frames length
 
-### circular.turn(i)
+### crl.turn(i)
 
   Animated turn to defined frame `i`
 
-### circular.go(i)
+### crl.go(i)
 
   Go to defined frame `i`
 
-### circular.hide()
+### crl.hide()
 
   Hide object DOM node
 
-### circular.show()
+### crl.show()
 
   Show object DOM node
 
-### circular.set(options)
+### crl.set(options)
 
   Change object parameters and callbacks after initialize:
 

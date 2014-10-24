@@ -20,13 +20,7 @@
    * @param {Object} options
    */
 
-  var Circular = function(element, options) {
-
-    /**
-     * Set object parameters
-     */
-
-    options = options || {};
+  function Circular(options) {
 
     /**
      * Mouse events enabled
@@ -68,7 +62,7 @@
      * DOM element
      */
 
-    var el = this.el = document.getElementById(element);
+    var el = this.el = document.getElementById(options.element);
 
     /**
      * DOM loader
@@ -578,22 +572,35 @@
   };
 
   /**
+   * Example creator
+   */
+
+  function Creator(element, options) {
+
+    options = options || {};
+    options.element = element;
+
+    return new Circular(options);
+
+  }
+
+  /**
    * Module exports
    */
 
   if (typeof define === 'function' && define.amd) {
 
     define([], function() {
-      return Circular;
+      return Creator;
     });
 
   } else if (typeof module !== 'undefined' && module.exports) {
 
-    module.exports = Circular;
+    module.exports = Creator;
 
   } else {
 
-    this.Circular = Circular;
+    this.circular = Creator;
 
   }
 

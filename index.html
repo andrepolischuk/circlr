@@ -29,7 +29,7 @@
     <div class="row">
 
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
-        
+
         <div class="panel panel-default">
           <div class="panel-body">
             <div id="circular">
@@ -58,10 +58,10 @@
           <h4>Цикличность</h4>
           <p>
             <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default" onclick="circular.set({ cycle : false });">
+              <label class="btn btn-default" onclick="crl.set({ cycle : false });">
                 <input type="radio" name="vertical"> Нет
               </label>
-              <label class="btn btn-default active" onclick="circular.set({ cycle : true });">
+              <label class="btn btn-default active" onclick="crl.set({ cycle : true });">
                 <input type="radio" name="vertical" checked> Да
               </label>
             </div>
@@ -72,10 +72,10 @@
           <h4>Реверс</h4>
           <p>
             <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default active" onclick="circular.set({ reverse : false });">
+              <label class="btn btn-default active" onclick="crl.set({ reverse : false });">
                 <input type="radio" name="vertical" checked> Нет
               </label>
-              <label class="btn btn-default" onclick="circular.set({ reverse : true });">
+              <label class="btn btn-default" onclick="crl.set({ reverse : true });">
                 <input type="radio" name="vertical"> Да
               </label>
             </div>
@@ -86,36 +86,36 @@
           <h4>Ориентация</h4>
           <p>
             <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default active" onclick="circular.set({ vertical : false });">
+              <label class="btn btn-default active" onclick="crl.set({ vertical : false });">
                 <input type="radio" name="vertical" checked> Горизонтально
               </label>
-              <label class="btn btn-default" onclick="circular.set({ vertical : true });">
+              <label class="btn btn-default" onclick="crl.set({ vertical : true });">
                 <input type="radio" name="vertical"> Вертикально
               </label>
             </div>
           </p>
         </div>
-        
+
         <div class="col-sm-6 text-center">
           <h4>Анимированный поворот</h4>
           <p>
-            <a href="#" class="btn btn-default" onclick="circular.turn(9); return false;">К десятому кадру</a>
-            <a href="#" class="btn btn-default" onclick="circular.turn(0); return false;">К первому</a>
+            <a href="#" class="btn btn-default" onclick="crl.turn(9); return false;">К десятому кадру</a>
+            <a href="#" class="btn btn-default" onclick="crl.turn(0); return false;">К первому</a>
           </p>
         </div>
 
         <div class="col-sm-6 text-center">
           <h4>Показать</h4>
           <p>
-            <a href="#" class="btn btn-default" onclick="circular.go(9); return false;">Десятый кадр</a>
-            <a href="#" class="btn btn-default" onclick="circular.go(0); return false;">Первый</a>
+            <a href="#" class="btn btn-default" onclick="crl.go(9); return false;">Десятый кадр</a>
+            <a href="#" class="btn btn-default" onclick="crl.go(0); return false;">Первый</a>
           </p>
         </div>
 
       </div>
 
     </div>
-    
+
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -123,7 +123,7 @@
   <script src="js/circular.min.js"></script>
 
   <script type="text/javascript">
-    var circular = new Circular('circular', {
+    var crl = circular('circular', {
       scroll : true,
       cycle  : true,
       loader : 'loader'

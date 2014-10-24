@@ -8,7 +8,7 @@
   /**
    * Mutable parameters
    */
-  
+
   var mutable = {};
 
   mutable.options   = ['vertical', 'reverse', 'cycle', 'interval'];
@@ -25,103 +25,103 @@
     /**
      * Set object parameters
      */
-    
+
     options = options || {};
 
     /**
      * Mouse events enabled
      */
-    
+
     options.mouse    = options.mouse || true;
 
     /**
      * Scroll events enabled
      */
-    
+
     options.scroll   = options.scroll || false;
 
     /**
      * Orientation
      */
-    
+
     options.vertical = options.vertical || false;
 
     /**
      * Turning reverse
      */
-    
+
     options.reverse  = options.reverse || false;
 
     /**
      * Turning cycle
      */
-    
+
     options.cycle    = options.cycle || false;
 
     /**
      * Turn interval (ms)
      */
-    
+
     options.interval = options.interval || 25;
 
     /**
      * DOM element
      */
-    
+
     var el = this.el = document.getElementById(element);
 
     /**
      * DOM loader
      */
-    
+
     var loader = options.loader ? document.getElementById(options.loader) : undefined;
 
     /**
      * Frames length
      */
-    
+
     var length = this.length = el.getElementsByTagName('img').length;
 
     /**
      * Frames area height
      */
-    
+
     var height = options.height || undefined;
 
     /**
      * Frames area width
      */
-    
+
     var width = options.width || undefined;
-    
+
     /**
      * Move enable
      */
-    
+
     var movable = false;
 
     /**
      * Loaded images length
      */
-    
+
     var loaded = [];
-    
+
     /**
      * Not loaded length
      */
-    
+
     var errored = [];
 
     /**
      * Current frame
      */
-    
+
     var current;
 
     /**
      * Prevous options
      */
-    
+
     var pre   = {};
 
     pre.Y     = null;
@@ -131,12 +131,12 @@
     /**
      * Callbacks
      */
-    
+
     var callbacks = {};
 
     // all images loaded callback
     callbacks.success = options.success || undefined;
-  
+
     // loading error callback
     callbacks.error   = options.error || undefined;
 
@@ -147,7 +147,7 @@
      * Pre moving event
      * @api private
      */
-    
+
     var preMove = function(e) {
 
       e = e || window.event;
@@ -170,7 +170,7 @@
      * @return {Number}
      * @api private
      */
-    
+
     var currentNorm = function(cur) {
 
       if (cur < 0) {
@@ -187,7 +187,7 @@
      * Moving event
      * @api private
      */
-    
+
     var isMove = function(e) {
 
       if (movable) {
@@ -214,7 +214,7 @@
           current = currentNorm(pre.frame + offset);
 
           if (previous !== current) {
-            
+
             // show current frame
             el.getElementsByTagName('img')[previous].style.display = 'none';
             el.getElementsByTagName('img')[current].style.display = 'block';
@@ -232,9 +232,9 @@
      * Post moving event
      * @api private
      */
-    
+
     var stopMove = function(e) {
-      
+
       e = e || window.event;
       e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
@@ -247,7 +247,7 @@
      * Moving via scroll
      * @api private
      */
-    
+
     var scrollMove = function(e) {
 
       e = e || window.event;
@@ -276,7 +276,7 @@
      * Initialize events after success images loading
      * @api private
      */
-    
+
     var initEvents = function() {
 
       // loader hide
@@ -285,7 +285,7 @@
       }
 
       if (errored.length === 0) {
-        
+
         // all images loaded
         el.getElementsByTagName('img')[0].style.display = 'block';
         current = 0;
@@ -296,9 +296,9 @@
         if ('ontouchstart' in window || 'onmsgesturechange' in window) {
 
             // touch events
-            
+
             if (options.mouse || options.scroll) {
-          
+
               // start move
               el.addEventListener('touchstart', preMove, false);
 
@@ -330,9 +330,9 @@
           if (options.scroll) {
 
             // scroll event
-            
+
             if ('function' === typeof window.addEventListener) {
-          
+
               if ('onwheel' in window) {
 
                 el.addEventListener('wheel', scrollMove, false);
@@ -350,7 +350,7 @@
                 el.addEventListener('DOMMouseScroll', scrollMove, false);
 
               }
-          
+
             } else {
 
               // scroll event
@@ -365,13 +365,13 @@
           }
 
         }
-        
+
         if (typeof callbacks.success === 'function') {
           callbacks.success();
         }
 
       } else {
-        
+
         // loading error
         if (typeof callbacks.error === 'function') {
           callbacks.error(errored);
@@ -387,7 +387,7 @@
     var loadImagesEvents = function(img) {
 
       img.onload = function() {
-        
+
         loaded.push(this.src);
 
         // show first frame when all images loaded
@@ -398,7 +398,7 @@
       };
 
       img.onerror = function() {
-        
+
         errored.push(this.src);
 
         // show first frame when images loaded
@@ -418,9 +418,9 @@
      * Load Object images
      * @api private
      */
-    
+
     var loadImages = function() {
-      
+
       // adding elements
       var img;
 
@@ -444,9 +444,9 @@
         img.removeAttribute('data-src');
 
         loadImagesEvents(img);
-        
+
       }
-      
+
       // check elements sizes
       height = height || el.clientHeight;
       width  = width || el.clientWidth;
@@ -456,7 +456,7 @@
     /**
      * Initialize loading
      */
-    
+
     loadImages();
 
     /**
@@ -464,7 +464,7 @@
      * @param  {Number} i
      * @api private
      */
-    
+
     var turn = function(i) {
 
       el.getElementsByTagName('img')[current].style.display = 'none';
@@ -479,7 +479,7 @@
      * @param  {Number} i
      * @api public
      */
-    
+
     this.turn = function(i) {
 
       i = currentNorm(i);
@@ -502,7 +502,7 @@
         }
 
       })();
-      
+
     };
 
     /**
@@ -510,7 +510,7 @@
      * @param  {Number} i
      * @api public
      */
-    
+
     this.go = function(i) {
 
       if (i !== current) {
@@ -529,7 +529,7 @@
      * Show object
      * @api public
      */
-    
+
     this.show = function() {
       el.style.display = 'block';
     };
@@ -561,7 +561,7 @@
               options[option] = array[option];
             }
           }
-          
+
           // change callbacks
           for (var j = 0; j < mutable.callbacks.length; j++) {
             if (option === mutable.callbacks[j]) {
@@ -580,7 +580,21 @@
   /**
    * Module exports
    */
-  
-  window.Circular = Circular;
 
-}();
+  if (typeof define === 'function' && define.amd) {
+
+    define([], function() {
+      return Circular;
+    });
+
+  } else if (typeof module !== 'undefined' && module.exports) {
+
+    module.exports = Circular;
+
+  } else {
+
+    this.Circular = Circular;
+
+  }
+
+}.call(this);

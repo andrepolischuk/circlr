@@ -62,7 +62,13 @@
      * DOM element
      */
 
-    var el = this.el = document.getElementById(options.element);
+    var el = this.el = options.element;
+
+    /**
+     * Exclude duplication
+     */
+
+    el.setAttribute('data-circular', true);
 
     /**
      * DOM loader
@@ -576,6 +582,12 @@
    */
 
   function Creator(element, options) {
+
+    element = document.getElementById(element);
+
+    if (element.getAttribute('data-circular')) {
+      return;
+    }
 
     options = options || {};
     options.element = element;

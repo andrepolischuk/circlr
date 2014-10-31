@@ -222,8 +222,11 @@
             if (typeof callbacks.change === 'function') {
               callbacks.change(current, length);
             }
+
           }
+
         }
+
       }
 
     };
@@ -334,30 +337,20 @@
             if ('function' === typeof window.addEventListener) {
 
               if ('onwheel' in window) {
-
                 el.addEventListener('wheel', scrollMove, false);
-
               } else if ('onmousewheel' in window) {
-
                 el.addEventListener('mousewheel', scrollMove, false);
-
               } else if ('onscroll' in window) {
-
                 el.addEventListener('scroll', scrollMove, false);
-
               } else {
-
                 el.addEventListener('DOMMouseScroll', scrollMove, false);
-
               }
 
             } else {
 
               // scroll event
               if (options.scroll) {
-
                 el.attachEvent('onmousewheel', scrollMove);
-
               }
 
             }
@@ -575,7 +568,7 @@
 
     };
 
-  };
+  }
 
   /**
    * Example creator

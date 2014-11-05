@@ -12,7 +12,7 @@
   var mutable = {};
 
   mutable.options   = ['vertical', 'reverse', 'cycle', 'interval'];
-  mutable.callbacks = ['success', 'error', 'change'];
+  mutable.callbacks = ['ready', 'change'];
 
   /**
    * Initialize module
@@ -135,13 +135,10 @@
     var callbacks = {};
 
     // all images loaded callback
-    callbacks.success = options.success || undefined;
-
-    // loading error callback
-    callbacks.error   = options.error || undefined;
+    callbacks.ready = options.ready || undefined;
 
     // turn callback
-    callbacks.change  = options.change || undefined;
+    callbacks.change = options.change || undefined;
 
     /**
      * Pre moving event
@@ -359,18 +356,12 @@
 
         }
 
-        if (typeof callbacks.success === 'function') {
-          callbacks.success();
-        }
-
-      } else {
-
-        // loading error
-        if (typeof callbacks.error === 'function') {
-          callbacks.error(errored);
-        }
-
       }
+
+      if (typeof callbacks.ready === 'function') {
+        callbacks.ready(errored);
+      }
+
     };
 
     /**

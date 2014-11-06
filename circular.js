@@ -9,10 +9,12 @@
    * Mutable parameters
    */
 
-  var mutable = {};
-
-  mutable.options   = ['vertical', 'reverse', 'cycle', 'interval'];
-  mutable.callbacks = ['ready', 'change'];
+  var mutable = [
+    'vertical',
+    'reverse',
+    'cycle',
+    'interval'
+  ];
 
   /**
    * Initialize module
@@ -533,30 +535,11 @@
      * @api public
      */
 
-    this.set = function(array) {
-
-      for (var option in array) {
-
-        if (array.hasOwnProperty(option)) {
-
-          // change parameters
-          for (var i = 0; i < mutable.options.length; i++) {
-            if (option === mutable.options[i]) {
-              options[option] = array[option];
-            }
-          }
-
-          // change callbacks
-          for (var j = 0; j < mutable.callbacks.length; j++) {
-            if (option === mutable.callbacks[j]) {
-              callbacks[option] = array[option];
-            }
-          }
-
-        }
-
+    this.set = function(set) {
+      for (var i = 0, key; i < mutable.length; i++) {
+        key = mutable[i];
+        options[key] = typeof set[key] !== 'undefined' ? set[key] : options[key];
       }
-
     };
 
   }

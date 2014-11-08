@@ -52,7 +52,7 @@
      * Turning cycle
      */
 
-    options.cycle    = options.cycle || false;
+    options.cycle    = options.cycle || true;
 
     /**
      * Turn interval (ms)

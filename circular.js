@@ -170,7 +170,7 @@
      * @api private
      */
 
-    var currentNorm = function(cur) {
+    var normalize = function(cur) {
 
       if (cur < 0) {
         cur = options.cycle ? cur + length : 0;
@@ -210,7 +210,7 @@
 
         if (offset !== current) {
 
-          current = currentNorm(pre.frame + offset);
+          current = normalize(pre.frame + offset);
 
           if (previous !== current) {
 
@@ -260,7 +260,7 @@
       delta = delta / Math.abs(delta);
       delta = options.reverse ? -delta : delta;
 
-      current = currentNorm(current + delta);
+      current = normalize(current + delta);
 
       // show current frame
       el.getElementsByTagName('img')[pre.frame].style.display = 'none';
@@ -451,7 +451,7 @@
      * @api private
      */
 
-    var turn = function(i) {
+    var setFrame = function(i) {
 
       el.getElementsByTagName('img')[current].style.display = 'none';
       el.getElementsByTagName('img')[i].style.display = 'block';
@@ -466,15 +466,15 @@
      * @api public
      */
 
-    this.turn = function(i) {
+    var turn = this.turn = function(i) {
 
-      i = currentNorm(i);
+      i = normalize(i);
 
       (function turnInterval() {
 
         if (i !== current) {
 
-          turn(currentNorm(current + 1));
+          setFrame(normalize(current + 1));
           setTimeout(turnInterval, options.interval);
 
         } else if (i === current) {
@@ -501,7 +501,7 @@
 
       if (i !== current) {
 
-        turn(i);
+        setFrame(i);
 
         if (typeof callbacks.change === 'function') {
           callbacks.change(current, length);

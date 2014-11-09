@@ -474,7 +474,7 @@
 
         if (i !== current) {
 
-          setFrame(normalize(current + 1));
+          setFrame(normalize(i < current ? current - 1 : current + 1));
           setTimeout(turnInterval, options.interval);
 
         } else if (i === current) {

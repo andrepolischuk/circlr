@@ -56,6 +56,12 @@
     options.cycle    = options.cycle || true;
 
     /**
+     * Start frame
+     */
+
+    options.start = options.start || 0;
+
+    /**
      * Turn speed (ms)
      */
 
@@ -305,9 +311,11 @@
 
       if (errored.length === 0) {
 
+        var start = normalize(options.start);
+
         // all images loaded
-        el.getElementsByTagName('img')[0].style.display = 'block';
-        current = 0;
+        el.getElementsByTagName('img')[start].style.display = 'block';
+        current = start;
 
         el.style.position   = 'relative';
         el.style.width      = '100%';

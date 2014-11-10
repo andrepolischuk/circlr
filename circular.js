@@ -13,7 +13,8 @@
     'vertical',
     'reverse',
     'cycle',
-    'interval'
+    'speed',
+    'playSpeed'
   ];
 
   /**
@@ -55,10 +56,10 @@
     options.cycle    = options.cycle || true;
 
     /**
-     * Turn interval (ms)
+     * Turn speed (ms)
      */
 
-    options.interval = options.interval || 25;
+    options.speed = options.speed || 50;
 
     /**
      * Autoplay
@@ -67,10 +68,10 @@
     var autoplay = options.autoplay || false;
 
     /**
-     * Play interval (ms)
+     * Play speed (ms)
      */
 
-    options.playInterval = options.playInterval || 100;
+    options.playSpeed = options.playSpeed || 100;
 
     /**
      * DOM element
@@ -496,7 +497,7 @@
         if (i !== current && autoplay) {
 
           setFrame(normalize(i < current ? current - 1 : current + 1));
-          setTimeout(turnInterval, typeof i === 'undefined' ? options.playInterval : options.interval);
+          setTimeout(turnInterval, typeof i === 'undefined' ? options.playSpeed : options.speed);
 
         } else if (i === current) {
 

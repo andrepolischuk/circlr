@@ -61,6 +61,18 @@
     options.interval = options.interval || 25;
 
     /**
+     * Autoplay
+     */
+
+    var autoplay = options.autoplay || false;
+
+    /**
+     * Play interval (ms)
+     */
+
+    options.playInterval = options.playInterval || 100;
+
+    /**
      * DOM element
      */
 
@@ -148,6 +160,8 @@
      */
 
     var preMove = function(e) {
+
+      autoplay = false;
 
       e = e || window.event;
       e.preventDefault ? e.preventDefault() : (e.returnValue = false);
@@ -251,6 +265,8 @@
      */
 
     var scrollMove = function(e) {
+
+      autoplay = false;
 
       e = e || window.event;
       e.preventDefault ? e.preventDefault() : (e.returnValue = false);
@@ -356,6 +372,10 @@
 
           }
 
+        }
+
+        if (autoplay) {
+          play();
         }
 
       }
@@ -469,17 +489,19 @@
     var turn = this.turn = function(i) {
 
       i = normalize(i);
+      autoplay = true;
 
       (function turnInterval() {
 
-        if (i !== current) {
+        if (i !== current && autoplay) {
 
           setFrame(normalize(i < current ? current - 1 : current + 1));
-          setTimeout(turnInterval, options.interval);
+          setTimeout(turnInterval, typeof i === 'undefined' ? options.playInterval : options.interval);
 
         } else if (i === current) {
 
           pre.frame = current = i;
+          autoplay = false;
 
           if (typeof callbacks.change === 'function') {
             callbacks.change(current, length);
@@ -509,6 +531,25 @@
 
       }
 
+    };
+
+    /**
+     * Play sequence
+     * @api public
+     */
+
+    var play = this.play = function() {
+      autoplay = true;
+      turn();
+    };
+
+    /**
+     * Stop sequence playng
+     * @api public
+     */
+
+    this.stop = function() {
+      autoplay = false;
     };
 
     /**

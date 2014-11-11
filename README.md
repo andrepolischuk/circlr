@@ -61,23 +61,31 @@ var crl = circular(element, options);
 
 #### options.cycle
 
-  Ciclic rotation (default `false`)
+  Ciclic rotation (default `true`)
 
-#### options.interval
+#### options.start
 
-  Frames change interval via `circular.turn(i)` (default `25ms`)
+  Start frame (default `0`)
+
+#### options.speed
+
+  Frames change speed via `circular.turn(i)` (default `50` ms)
+
+#### options.autoplay
+
+  Auto playback of sequence initialization (default `false`)
+
+#### options.playSpeed
+
+  Sequence playback speed (default `100` ms)
 
 #### options.loader
 
   DOM preloader id
 
-#### options.success
+#### options.ready
 
-  Images success loading callback
-
-#### options.error
-
-  Images error loading callback (send errored images array in arguments)
+  Images loading callback
 
 #### options.change
 
@@ -101,6 +109,14 @@ var crl = circular(element, options);
 
   Go to defined frame `i`
 
+### crl.play()
+
+  Start sequence playback
+
+### crl.stop()
+
+  Stop playback
+
 ### crl.hide()
 
   Hide object DOM node
@@ -111,15 +127,13 @@ var crl = circular(element, options);
 
 ### crl.set(options)
 
-  Change object parameters and callbacks after initialize:
+  Change object parameters after initialization:
 
 * `vertical`
 * `reverse`
 * `cycle`
-* `interval`
-* `success`
-* `error`
-* `change`
+* `speed`
+* `playSpeed`
 
 ## Support
 

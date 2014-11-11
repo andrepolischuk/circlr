@@ -1,3 +1,14 @@
+# 1.1.0 / 2014.11.11
+
+  * Add start frame option in initialization
+  * Add autoplay, #3
+  * Fix #4 join success and error callbacks to ready callback
+  * Fix #5 remove callbacks mutable
+  * Fix turn directions
+  * Fix set default true to options.cycle
+  * Refactor intervals
+  * Refactor functions
+
 # 1.0.2 / 2014.11.01
 
   * Fix #2 gallery duplication in Creator

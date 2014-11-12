@@ -96,19 +96,27 @@
           </p>
         </div>
 
-        <div class="col-sm-6 text-center">
+        <div class="col-sm-4 text-center">
           <h4>Анимированный поворот</h4>
           <p>
-            <a href="#" class="btn btn-default" onclick="crl.turn(9); return false;">К десятому кадру</a>
-            <a href="#" class="btn btn-default" onclick="crl.turn(0); return false;">К первому</a>
+            <a href="#" class="btn btn-default" onclick="crl.turn(9); return false;">К 10-му кадру</a>
+            <a href="#" class="btn btn-default" onclick="crl.turn(0); return false;">К 1-му</a>
           </p>
         </div>
 
-        <div class="col-sm-6 text-center">
+        <div class="col-sm-4 text-center">
           <h4>Показать</h4>
           <p>
-            <a href="#" class="btn btn-default" onclick="crl.go(9); return false;">Десятый кадр</a>
-            <a href="#" class="btn btn-default" onclick="crl.go(0); return false;">Первый</a>
+            <a href="#" class="btn btn-default" onclick="crl.go(9); return false;">10-й кадр</a>
+            <a href="#" class="btn btn-default" onclick="crl.go(0); return false;">1-й</a>
+          </p>
+        </div>
+
+        <div class="col-sm-4 text-center">
+          <h4>Автокручение</h4>
+          <p>
+            <a href="#" class="btn btn-default" onclick="crl.play(); return false;">Начать</a>
+            <a href="#" class="btn btn-default" onclick="crl.stop(); return false;">Остановить</a>
           </p>
         </div>
 
@@ -125,7 +133,6 @@
   <script type="text/javascript">
     var crl = circular('circular', {
       scroll : true,
-      cycle  : true,
       loader : 'loader'
     });
   </script>

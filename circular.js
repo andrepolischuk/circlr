@@ -162,6 +162,37 @@
     callbacks.change = options.change || undefined;
 
     /**
+     * Scroll events
+     */
+
+    var scrollEvents = [
+      'wheel',
+      'mousewheel',
+      'scroll',
+      'DOMMouseScroll'
+    ];
+
+    /**
+     * Add event listener
+     * @param {Object} target
+     * @param {String} event
+     * @param {Function} fn
+     * @api private
+     */
+
+    function onEventListener(target, event, fn) {
+
+      if (target.addEventListener) {
+        target.addEventListener(event, fn, false);
+      } else {
+        target.attachEvent('on' + event, function() {
+          fn.call(target, window.event);
+        });
+      }
+
+    }
+
+    /**
      * Prevent default
      * @param {Object} e
      */
@@ -186,7 +217,6 @@
 
       autoplay = false;
 
-      e = e || window.event;
       preventDefault(e);
       e = e.type === 'touchstart' ? e.changedTouches[0] : e;
 
@@ -229,7 +259,6 @@
 
       if (movable) {
 
-        e = e || window.event;
         preventDefault(e);
         e = e.type === 'touchmove' ? e.changedTouches[0] : e;
 
@@ -276,7 +305,6 @@
 
     function stopMove(e) {
 
-      e = e || window.event;
       preventDefault(e);
 
       movable   = false;
@@ -294,7 +322,6 @@
 
       autoplay = false;
 
-      e = e || window.event;
       preventDefault(e);
 
       // scroll delta
@@ -341,63 +368,27 @@
 
         if ('ontouchstart' in window || 'onmsgesturechange' in window) {
 
-            // touch events
-
             if (options.mouse || options.scroll) {
-
-              // start move
-              el.addEventListener('touchstart', preMove, false);
-
-              // move
-              el.addEventListener('touchmove', isMove, false);
-
-              // stop move
-              el.addEventListener('touchend', stopMove, false);
-
+              onEventListener(el, 'touchstart', preMove);
+              onEventListener(el, 'touchmove', isMove);
+              onEventListener(el, 'touchend', stopMove);
             }
 
         } else {
 
           if (options.mouse) {
-
-            // mouse events
-
-            // start move
-            el.onmousedown = preMove;
-
-            // move
-            el.onmousemove = isMove;
-
-            // stop move
-            document.onmouseup  = stopMove;
-
+            onEventListener(el, 'mousedown', preMove);
+            onEventListener(el, 'mousemove', isMove);
+            onEventListener(document, 'mouseup', stopMove);
           }
 
           if (options.scroll) {
-
-            // scroll event
-
-            if ('function' === typeof window.addEventListener) {
-
-              if ('onwheel' in window) {
-                el.addEventListener('wheel', scrollMove, false);
-              } else if ('onmousewheel' in window) {
-                el.addEventListener('mousewheel', scrollMove, false);
-              } else if ('onscroll' in window) {
-                el.addEventListener('scroll', scrollMove, false);
-              } else {
-                el.addEventListener('DOMMouseScroll', scrollMove, false);
+            for (var e = 0; e < scrollEvents.length; e++) {
+              if ('on' + scrollEvents[e] in window) {
+                onEventListener(el, scrollEvents[e], scrollMove);
+                break;
               }
-
-            } else {
-
-              // scroll event
-              if (options.scroll) {
-                el.attachEvent('onmousewheel', scrollMove);
-              }
-
             }
-
           }
 
         }

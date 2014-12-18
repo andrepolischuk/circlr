@@ -515,7 +515,7 @@
      * @api public
      */
 
-    this.turn = function turn(i) {
+    var turn = this.turn = function(i) {
 
       i = normalize(i);
       autoplay = true;
@@ -567,7 +567,7 @@
      * @api public
      */
 
-    this.play = function play() {
+    var play = this.play = function() {
       autoplay = true;
       turn();
     };

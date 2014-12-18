@@ -1,7 +1,7 @@
 // Circular © 2014 Andrey Polischuk
 // https://github.com/andrepolischuk/circular
 
-!function(undefined) {
+!function() {
 
   'use strict';
 
@@ -29,13 +29,13 @@
      * Mouse events enabled
      */
 
-    options.mouse    = options.mouse || true;
+    options.mouse = options.mouse || true;
 
     /**
      * Scroll events enabled
      */
 
-    options.scroll   = options.scroll || false;
+    options.scroll = options.scroll || false;
 
     /**
      * Orientation
@@ -47,13 +47,13 @@
      * Turning reverse
      */
 
-    options.reverse  = options.reverse || false;
+    options.reverse = options.reverse || false;
 
     /**
      * Turning cycle
      */
 
-    options.cycle    = options.cycle || true;
+    options.cycle = options.cycle || true;
 
     /**
      * Start frame
@@ -163,10 +163,11 @@
 
     /**
      * Pre moving event
+     * @param {Object} e
      * @api private
      */
 
-    var preMove = function(e) {
+    function preMove(e) {
 
       autoplay = false;
 
@@ -182,7 +183,7 @@
         pre.X = e.clientX - el.offsetLeft;
       }
 
-    };
+    }
 
     /**
      * Normalize current frame
@@ -191,7 +192,7 @@
      * @api private
      */
 
-    var normalize = function(cur) {
+    function normalize(cur) {
 
       if (cur < 0) {
         cur = options.cycle ? cur + length : 0;
@@ -201,14 +202,15 @@
 
       return cur;
 
-    };
+    }
 
     /**
      * Moving event
+     * @param {Object} e
      * @api private
      */
 
-    var isMove = function(e) {
+    function isMove(e) {
 
       if (movable) {
 
@@ -249,14 +251,15 @@
 
       }
 
-    };
+    }
 
     /**
      * Post moving event
+     * @param {Object} e
      * @api private
      */
 
-    var stopMove = function(e) {
+    function stopMove(e) {
 
       e = e || window.event;
       e.preventDefault ? e.preventDefault() : (e.returnValue = false);
@@ -264,14 +267,15 @@
       movable   = false;
       pre.frame = current;
 
-    };
+    }
 
     /**
      * Moving via scroll
+     * @param {Object} e
      * @api private
      */
 
-    var scrollMove = function(e) {
+    function scrollMove(e) {
 
       autoplay = false;
 
@@ -295,14 +299,14 @@
         callbacks.change(current, length);
       }
 
-    };
+    }
 
     /**
      * Initialize events after success images loading
      * @api private
      */
 
-    var initEvents = function() {
+    function initEvents() {
 
       // loader hide
       if (loader) {
@@ -393,13 +397,14 @@
         callbacks.ready(errored);
       }
 
-    };
+    }
 
     /**
      * Initialize images events
+     * @param {Object} img
      */
 
-    var loadImagesEvents = function(img) {
+    function loadImagesEvents(img) {
 
       img.onload = function() {
 
@@ -427,14 +432,14 @@
         this.onload();
       };
 
-    };
+    }
 
     /**
      * Load Object images
      * @api private
      */
 
-    var loadImages = function() {
+    function loadImages() {
 
       // adding elements
       var img;
@@ -466,7 +471,7 @@
       height = height || el.clientHeight;
       width  = width || el.clientWidth;
 
-    };
+    }
 
     /**
      * Initialize loading
@@ -480,14 +485,14 @@
      * @api private
      */
 
-    var setFrame = function(i) {
+    function setFrame(i) {
 
       el.getElementsByTagName('img')[current].style.display = 'none';
       el.getElementsByTagName('img')[i].style.display = 'block';
 
       pre.frame = current = i;
 
-    };
+    }
 
     /**
      * Turn to specific frame
@@ -495,7 +500,7 @@
      * @api public
      */
 
-    var turn = this.turn = function(i) {
+    this.turn = function turn(i) {
 
       i = normalize(i);
       autoplay = true;
@@ -547,7 +552,7 @@
      * @api public
      */
 
-    var play = this.play = function() {
+    this.play = function play() {
       autoplay = true;
       turn();
     };

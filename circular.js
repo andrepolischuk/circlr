@@ -162,6 +162,21 @@
     callbacks.change = options.change || undefined;
 
     /**
+     * Prevent default
+     * @param {Object} e
+     */
+
+    function preventDefault(e) {
+
+      if (e.preventDefault) {
+        e.preventDefault();
+      } else {
+        e.returnValue = false;
+      }
+
+    }
+
+    /**
      * Pre moving event
      * @param {Object} e
      * @api private
@@ -172,7 +187,7 @@
       autoplay = false;
 
       e = e || window.event;
-      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+      preventDefault(e);
       e = e.type === 'touchstart' ? e.changedTouches[0] : e;
 
       movable = true;
@@ -215,7 +230,7 @@
       if (movable) {
 
         e = e || window.event;
-        e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+        preventDefault(e);
         e = e.type === 'touchmove' ? e.changedTouches[0] : e;
 
         // current offset (px)
@@ -262,7 +277,7 @@
     function stopMove(e) {
 
       e = e || window.event;
-      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+      preventDefault(e);
 
       movable   = false;
       pre.frame = current;
@@ -280,7 +295,7 @@
       autoplay = false;
 
       e = e || window.event;
-      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+      preventDefault(e);
 
       // scroll delta
       var delta = e.deltaY || e.detail || (-e.wheelDelta);

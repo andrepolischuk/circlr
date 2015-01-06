@@ -4,14 +4,14 @@ body {
   padding-bottom: 50px;
 }
 
-#turnover {
+#circlr {
   cursor: move;
   margin: 0 auto;
   min-height: 100px;
   position: relative;
 }
 
-#turnover #loader {
+#circlr #loader {
   background: url(../images/loader.gif) center center no-repeat;
   bottom: 0;
   display: none;

@@ -2,29 +2,30 @@
 
   Animation rotation via scroll, mouse and touch events
 
-* Horizontal or vertical orientation
-* Touch events support
-* Scroll support
-* Images loading progress
-* Reverse and cyclic rotation
+  * Horizontal or vertical orientation
+  * Touch events support
+  * Scroll support
+  * Images loading progress
+  * Reverse and cyclic rotation
 
 ## Instalation
 
-  Via some tags in page sources:
+  Browser:
 
 ```html
-<div id="circlr">
-  <img data-src="/static/images/frame0.jpg" alt="">
-  <img data-src="/static/images/frame1.jpg" alt="">
-  <img data-src="/static/images/frame2.jpg" alt="">
-  <img data-src="/static/images/frame3.jpg" alt="">
-  <img data-src="/static/images/frame4.jpg" alt="">
-  <img data-src="/static/images/frame5.jpg" alt="">
-  ...
-  <div id="loader"></div>
-</div>
-...
-<script src="//cdn.rawgit.com/andrepolischuk/circlr/1.1.0/circlr.min.js"></script>
+<script src="https://cdn.rawgit.com/andrepolischuk/circlr/1.2.0/circlr.min.js"></script>
+```
+
+  Component(1):
+
+```sh
+$ component install andrepolischuk/circlr
+```
+
+  Npm:
+
+```sh
+$ npm install circlr
 ```
 
 ## Initialization

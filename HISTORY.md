@@ -1,3 +1,9 @@
+# 1.2.0 / 2015.01.07
+
+  * Rename module to Circlr from Circular
+  * Add npm support
+  * Add component support #7
+
 # 1.1.0 / 2014.11.11
 
   * Add start frame option in initialization

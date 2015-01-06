@@ -1,0 +1,16 @@
+{
+  "name": "circlr",
+  "description": "Animation rotation via scroll, mouse and touch events",
+  "version": "1.1.0",
+  "keywords": [
+    "animation",
+    "rotation",
+    "image"
+  ],
+  "repository": "andrepolischuk/circlr",
+  "main" : "circlr.js",
+  "scripts" : [
+    "circlr.js"
+  ],
+  "license": "MIT"
+}

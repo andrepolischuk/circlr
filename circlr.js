@@ -1,5 +1,5 @@
-// Circular © 2014 Andrey Polischuk
-// https://github.com/andrepolischuk/circular
+// Circlr © 2014-2015 Andrey Polischuk
+// github.com/andrepolischuk/circlr
 
 !function() {
 
@@ -23,7 +23,7 @@
    * @param {Object} options
    */
 
-  function Circular(options) {
+  function Circlr(options) {
 
     /**
      * Mouse events enabled
@@ -89,7 +89,7 @@
      * Exclude duplication
      */
 
-    el.setAttribute('data-circular', true);
+    el.setAttribute('data-circlr', true);
 
     /**
      * DOM loader
@@ -613,14 +613,14 @@
 
     element = document.getElementById(element);
 
-    if (element.getAttribute('data-circular')) {
+    if (element.getAttribute('data-circlr')) {
       return;
     }
 
     options = options || {};
     options.element = element;
 
-    return new Circular(options);
+    return new Circlr(options);
 
   }
 
@@ -640,7 +640,7 @@
 
   } else {
 
-    this.circular = Creator;
+    this.circlr = Creator;
 
   }
 

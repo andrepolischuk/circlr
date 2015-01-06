@@ -1,4 +1,4 @@
-# Circular
+# Circlr
 
   Animation rotation via scroll, mouse and touch events
 
@@ -13,7 +13,7 @@
   Via some tags in page sources:
 
 ```html
-<div id="circular">
+<div id="circlr">
   <img data-src="/static/images/frame0.jpg" alt="">
   <img data-src="/static/images/frame1.jpg" alt="">
   <img data-src="/static/images/frame2.jpg" alt="">
@@ -24,7 +24,7 @@
   <div id="loader"></div>
 </div>
 ...
-<script src="//cdn.rawgit.com/andrepolischuk/circular/1.1.0/circular.min.js"></script>
+<script src="//cdn.rawgit.com/andrepolischuk/circlr/1.1.0/circlr.min.js"></script>
 ```
 
 ## Initialization
@@ -32,7 +32,7 @@
   Create object with parameters:
 
 ```js
-var crl = circular(element, options);
+var crl = circlr(element, options);
 ```
 
 ### element
@@ -69,7 +69,7 @@ var crl = circular(element, options);
 
 #### options.speed
 
-  Frames change speed via `circular.turn(i)` (default `50` ms)
+  Frames change speed via `circlr.turn(i)` (default `50` ms)
 
 #### options.autoplay
 

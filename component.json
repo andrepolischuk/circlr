@@ -8,6 +8,10 @@
     "image"
   ],
   "repository": "andrepolischuk/circlr",
+  "dependencies": {
+    "andrepolischuk/eventwheel": "^0.3.0",
+    "component/event": "^0.1.4"
+  },
   "main": "index.js",
   "scripts": [
     "index.js"

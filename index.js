@@ -2,6 +2,13 @@
 'use strict';
 
 /**
+ * Module dependencies
+ */
+
+var events = require('event');
+var wheel = require('eventwheel');
+
+/**
  * Mutable parameters
  */
 
@@ -168,27 +175,6 @@ function Circlr(options) {
     'scroll',
     'DOMMouseScroll'
   ];
-
-  /**
-   * Add event listener
-   *
-   * @param {Object} target
-   * @param {String} event
-   * @param {Function} fn
-   * @api private
-   */
-
-  function onEventListener(target, event, fn) {
-
-    if (target.addEventListener) {
-      target.addEventListener(event, fn, false);
-    } else {
-      target.attachEvent('on' + event, function() {
-        fn.call(target, window.event);
-      });
-    }
-
-  }
 
   /**
    * Prevent default
@@ -374,26 +360,21 @@ function Circlr(options) {
       if ('ontouchstart' in window || 'onmsgesturechange' in window) {
 
           if (options.mouse || options.scroll) {
-            onEventListener(el, 'touchstart', preMove);
-            onEventListener(el, 'touchmove', isMove);
-            onEventListener(el, 'touchend', stopMove);
+            events.bind(el, 'touchstart', preMove);
+            events.bind(el, 'touchmove', isMove);
+            events.bind(el, 'touchend', stopMove);
           }
 
       } else {
 
         if (options.mouse) {
-          onEventListener(el, 'mousedown', preMove);
-          onEventListener(el, 'mousemove', isMove);
-          onEventListener(document, 'mouseup', stopMove);
+          events.bind(el, 'mousedown', preMove);
+          events.bind(el, 'mousemove', isMove);
+          events.bind(document, 'mouseup', stopMove);
         }
 
         if (options.scroll) {
-          for (var e = 0; e < scrollEvents.length; e++) {
-            if ('on' + scrollEvents[e] in window) {
-              onEventListener(el, scrollEvents[e], scrollMove);
-              break;
-            }
-          }
+          wheel.bind(el, scrollMove);
         }
 
       }

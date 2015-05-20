@@ -8,9 +8,9 @@
     "image"
   ],
   "repository": "andrepolischuk/circlr",
-  "main" : "circlr.js",
-  "scripts" : [
-    "circlr.js"
+  "main": "index.js",
+  "scripts": [
+    "index.js"
   ],
   "license": "MIT"
 }

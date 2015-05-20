@@ -1,6 +1,6 @@
-# Circlr
+# circlr
 
-  Animation rotation via scroll, mouse and touch events
+  > Animation rotation via scroll, mouse and touch events
 
   * Horizontal or vertical orientation
   * Touch events support
@@ -10,25 +10,12 @@
 
 ## Instalation
 
-  Browser:
-
-```html
-<script src="https://cdn.rawgit.com/andrepolischuk/circlr/1.2.0/circlr.min.js"></script>
-```
-
-  Component(1):
-
 ```sh
+$ npm install --save circlr
 $ component install andrepolischuk/circlr
 ```
 
-  Npm:
-
-```sh
-$ npm install circlr
-```
-
-## Initialization
+## Usage
 
   Create object with parameters:
 
@@ -143,3 +130,7 @@ var crl = circlr(element, options);
 * Safari
 * Firefox
 * Opera
+
+## License
+
+  MIT

@@ -7,11 +7,8 @@
     "rotation",
     "image"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/andrepolischuk/circlr.git"
-  },
-  "main": "circlr.js",
+  "repository": "andrepolischuk/circlr",
+  "main": "index.js",
   "author": "Andrey Polischuk <andre.polischuk@gmail.com>",
   "license": "MIT"
 }

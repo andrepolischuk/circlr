@@ -30,12 +30,6 @@ var mutable = [
 function Circlr(options) {
 
   /**
-   * Mouse events enabled
-   */
-
-  options.mouse = options.mouse || true;
-
-  /**
    * Scroll events enabled
    */
 
@@ -347,19 +341,15 @@ function Circlr(options) {
 
     if ('ontouchstart' in window || 'onmsgesturechange' in window) {
 
-        if (options.mouse || options.scroll) {
-          events.bind(el, 'touchstart', preMove);
-          events.bind(el, 'touchmove', isMove);
-          events.bind(el, 'touchend', stopMove);
-        }
+      events.bind(el, 'touchstart', preMove);
+      events.bind(el, 'touchmove', isMove);
+      events.bind(el, 'touchend', stopMove);
 
     } else {
 
-      if (options.mouse) {
-        events.bind(el, 'mousedown', preMove);
-        events.bind(el, 'mousemove', isMove);
-        events.bind(document, 'mouseup', stopMove);
-      }
+      events.bind(el, 'mousedown', preMove);
+      events.bind(el, 'mousemove', isMove);
+      events.bind(document, 'mouseup', stopMove);
 
       if (options.scroll) {
         wheel.bind(el, scrollMove);

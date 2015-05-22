@@ -5,131 +5,98 @@
   * Horizontal or vertical orientation
   * Touch events support
   * Scroll support
-  * Images loading progress
   * Reverse and cyclic rotation
 
 ## Instalation
 
 ```sh
 $ npm install --save circlr
+```
+
+```sh
 $ component install andrepolischuk/circlr
 ```
 
 ## Usage
 
-  Create object with parameters:
-
 ```js
-var crl = circlr(element, options);
+var circlr = require('circlr');
+var el = document.querySelector('.container');
+
+circlr(el)
+  .scroll()
+  .play()
+  .on('show', function(n) {
+
+  });
 ```
-
-### element
-
-  DOM element id
-
-### options
-
-  Parameters object
-
-#### options.mouse
-
-  Rotation via mouse moves (default `true`)
-
-#### options.scroll
-
-  Rotation via scroll (default `false`)
-
-#### options.vertical
-
-  Moves vertical orientation (default `false`)
-
-#### options.reverse
-
-  Reverse rotation (default `false`)
-
-#### options.cycle
-
-  Ciclic rotation (default `true`)
-
-#### options.start
-
-  Start frame (default `0`)
-
-#### options.speed
-
-  Frames change speed via `circlr.turn(i)` (default `50` ms)
-
-#### options.autoplay
-
-  Auto playback of sequence initialization (default `false`)
-
-#### options.playSpeed
-
-  Sequence playback speed (default `100` ms)
-
-#### options.loader
-
-  DOM preloader id
-
-#### options.ready
-
-  Images loading callback
-
-#### options.change
-
-  Frames change callback (send current frame and frames length in arguments)
 
 ## API
 
-### crl.el
+### circlr(el)
 
-  Return object DOM node
+  Create circular rotation for `el` childrens
 
-### crl.length
+```js
+circlr('.container');
+circlr(document.querySelector('.container'));
+```
 
-  Return object frames length
+### #scroll()
 
-### crl.turn(i)
+  Set rotation via scroll, default `false`
 
-  Animated turn to defined frame `i`
+### #vertical()
 
-### crl.go(i)
+  Set vertical orientation, default `false`
 
-  Go to defined frame `i`
+### #reverse()
 
-### crl.play()
+  Set reverse rotation, default `false`
 
-  Start sequence playback
+### #cycle()
 
-### crl.stop()
+  Set cyclic rotation, default `true`
+
+### #start(n)
+
+  Set start frame, default `0`
+
+### #interval(ms)
+
+  Set playback interval, default `75` ms
+
+### #play([n])
+
+  Start sequence playback to `n` frame or start infinity playback if `n` in not defined
+
+### #stop()
 
   Stop playback
 
-### crl.hide()
+### #show(n)
 
-  Hide object DOM node
+  Show `n` frame
 
-### crl.show()
+### #prev()
 
-  Show object DOM node
+  Show previous frame
 
-### crl.set(options)
+### #next()
 
-  Change object parameters after initialization:
+  Show next frame
 
-* `vertical`
-* `reverse`
-* `cycle`
-* `speed`
-* `playSpeed`
+## Events
+
+  * `show`, when frame is showed
 
 ## Support
 
-* Internet Explorer 7+
-* Chrome
-* Safari
-* Firefox
-* Opera
+  * Internet Explorer 7+
+  * Chrome
+  * Safari
+  * Firefox
+  * Opera
 
 ## License
 

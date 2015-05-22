@@ -10,6 +10,8 @@
   "repository": "andrepolischuk/circlr",
   "dependencies": {
     "andrepolischuk/eventwheel": "^0.3.0",
+    "component/bind": "^1.0.0",
+    "component/emitter": "^1.2.0",
     "component/event": "^0.1.4"
   },
   "main": "index.js",

@@ -5,515 +5,338 @@
  * Module dependencies
  */
 
+var bind = require('bind');
+var Emitter = require('emitter');
 var events = require('event');
 var wheel = require('eventwheel');
 
 /**
- * Mutable parameters
+ * Expose rotation
  */
 
-var mutable = [
-  'vertical',
-  'reverse',
-  'cycle',
-  'speed',
-  'playSpeed'
-];
+module.exports = Rotation;
 
 /**
- * Initialize module
+ * Rotation
  *
- * @param {Object} el
- * @param {Object} options
+ * @param {Element} el
+ * @api public
  */
 
-function Circlr(options) {
-
-  /**
-   * Scroll events enabled
-   */
-
-  options.scroll = options.scroll || false;
-
-  /**
-   * Orientation
-   */
-
-  options.vertical = options.vertical || false;
-
-  /**
-   * Turning reverse
-   */
-
-  options.reverse = options.reverse || false;
-
-  /**
-   * Turning cycle
-   */
-
-  options.cycle = options.cycle || true;
-
-  /**
-   * Start frame
-   */
-
-  options.start = options.start || 0;
-
-  /**
-   * Turn speed (ms)
-   */
-
-  options.speed = options.speed || 50;
-
-  /**
-   * Autoplay
-   */
-
-  var autoplay = options.autoplay || false;
-
-  /**
-   * Play speed (ms)
-   */
-
-  options.playSpeed = options.playSpeed || 100;
-
-  /**
-   * DOM element
-   */
-
-  var el = this.el = options.element;
-
-  /**
-   * Exclude duplication
-   */
-
-  el.setAttribute('data-circlr', true);
-
-  /**
-   * Frames length
-   */
-
-  var length = this.length = el.getElementsByTagName('img').length;
-
-  /**
-   * Frames area height
-   */
-
-  var height = options.height || undefined;
-
-  /**
-   * Frames area width
-   */
-
-  var width = options.width || undefined;
-
-  /**
-   * Move enable
-   */
-
-  var movable = false;
-
-  /**
-   * Current frame
-   */
-
-  var current;
-
-  /**
-   * Prevous options
-   */
-
-  var pre   = {};
-
-  pre.Y     = null;
-  pre.X     = null;
-  pre.frame = 0;
-
-  /**
-   * Callbacks
-   */
-
-  var callbacks = {};
-
-  // turn callback
-  callbacks.change = options.change || undefined;
-
-  /**
-   * Scroll events
-   */
-
-  var scrollEvents = [
-    'wheel',
-    'mousewheel',
-    'scroll',
-    'DOMMouseScroll'
-  ];
-
-  /**
-   * Prevent default
-   *
-   * @param {Object} e
-   * @api private
-   */
-
-  function preventDefault(e) {
-
-    if (e.preventDefault) {
-      e.preventDefault();
-    } else {
-      e.returnValue = false;
-    }
-
-  }
-
-  /**
-   * Pre moving event
-   *
-   * @param {Object} e
-   * @api private
-   */
-
-  function preMove(e) {
-
-    autoplay = false;
-
-    preventDefault(e);
-    e = e.type === 'touchstart' ? e.changedTouches[0] : e;
-
-    movable = true;
-
-    if (options.vertical) {
-      pre.Y = e.clientY - el.offsetTop;
-    } else {
-      pre.X = e.clientX - el.offsetLeft;
-    }
-
-  }
-
-  /**
-   * Normalize current frame
-   *
-   * @param  {Number} cur
-   * @return {Number}
-   * @api private
-   */
-
-  function normalize(cur) {
-
-    if (cur < 0) {
-      cur = options.cycle ? cur + length : 0;
-    } else if (cur > length - 1) {
-      cur = options.cycle ? cur - length : length - 1;
-    }
-
-    return cur;
-
-  }
-
-  /**
-   * Moving event
-   *
-   * @param {Object} e
-   * @api private
-   */
-
-  function isMove(e) {
-
-    if (movable) {
-
-      preventDefault(e);
-      e = e.type === 'touchmove' ? e.changedTouches[0] : e;
-
-      // current offset (px)
-      var offset = (options.vertical) ? ((e.clientY - el.offsetTop) - pre.Y) : ((e.clientX - el.offsetLeft) - pre.X);
-      offset = options.reverse ? -offset : offset;
-
-      // frame step (px)
-      var step = width / length;
-
-      // prevous frame
-      var previous = current;
-
-      // current offset (frame)
-      offset = Math.floor(offset / step);
-
-      if (offset !== current) {
-
-        current = normalize(pre.frame + offset);
-
-        if (previous !== current) {
-
-          // show current frame
-          el.getElementsByTagName('img')[previous].style.display = 'none';
-          el.getElementsByTagName('img')[current].style.display = 'block';
-
-          if (typeof callbacks.change === 'function') {
-            callbacks.change(current, length);
-          }
-
-        }
-
-      }
-
-    }
-
-  }
-
-  /**
-   * Post moving event
-   *
-   * @param {Object} e
-   * @api private
-   */
-
-  function stopMove(e) {
-
-    preventDefault(e);
-
-    movable   = false;
-    pre.frame = current;
-
-  }
-
-  /**
-   * Moving via scroll
-   *
-   * @param {Object} e
-   * @api private
-   */
-
-  function scrollMove(e) {
-
-    autoplay = false;
-
-    preventDefault(e);
-
-    // scroll delta
-    var delta = e.deltaY || e.detail || (-e.wheelDelta);
-    delta = delta / Math.abs(delta);
-    delta = options.reverse ? -delta : delta;
-
-    current = normalize(current + delta);
-
-    // show current frame
-    el.getElementsByTagName('img')[pre.frame].style.display = 'none';
-    el.getElementsByTagName('img')[current].style.display = 'block';
-
-    pre.frame = current;
-
-    if (typeof callbacks.change === 'function') {
-      callbacks.change(current, length);
-    }
-
-  }
-
-  /**
-   * Initialize
-   * @api private
-   */
-
-  function init() {
-
-    // adding elements
-    var img;
-
-    for (var i = 0; i < length; i++) {
-
-      // get object
-      img = el.getElementsByTagName('img')[i];
-
-      // set object style
-      img.style.display      = 'none';
-      img.style.width        = '100%';
-    }
-
-    // check elements sizes
-    height = height || el.clientHeight;
-    width  = width || el.clientWidth;
-
-    var start = normalize(options.start);
-
-    el.getElementsByTagName('img')[start].style.display = 'block';
-    current = start;
-
-    el.style.position   = 'relative';
-    el.style.width      = '100%';
-
-    if ('ontouchstart' in window || 'onmsgesturechange' in window) {
-
-      events.bind(el, 'touchstart', preMove);
-      events.bind(el, 'touchmove', isMove);
-      events.bind(el, 'touchend', stopMove);
-
-    } else {
-
-      events.bind(el, 'mousedown', preMove);
-      events.bind(el, 'mousemove', isMove);
-      events.bind(document, 'mouseup', stopMove);
-
-      if (options.scroll) {
-        wheel.bind(el, scrollMove);
-      }
-
-    }
-
-    if (autoplay) {
-      play();
-    }
-
-  }
-
-  /**
-   * Initialize
-   */
-
-  init();
-
-  /**
-   * Change current frame
-   *
-   * @param  {Number} i
-   * @api private
-   */
-
-  function setFrame(i) {
-
-    el.getElementsByTagName('img')[current].style.display = 'none';
-    el.getElementsByTagName('img')[i].style.display = 'block';
-
-    pre.frame = current = i;
-
-  }
-
-  /**
-   * Turn to specific frame
-   *
-   * @param  {Number} i
-   * @api public
-   */
-
-  var turn = this.turn = function(i) {
-
-    i = normalize(i);
-    autoplay = true;
-
-    (function turnInterval() {
-
-      if (i !== current && autoplay) {
-
-        setFrame(normalize(i < current ? current - 1 : current + 1));
-        setTimeout(turnInterval, typeof i === 'undefined' ? options.playSpeed : options.speed);
-
-      } else if (i === current) {
-
-        pre.frame = current = i;
-        autoplay = false;
-
-        if (typeof callbacks.change === 'function') {
-          callbacks.change(current, length);
-        }
-
-      }
-
-    })();
-
-  };
-
-  /**
-   * Go to specific frame
-   *
-   * @param  {Number} i
-   * @api public
-   */
-
-  this.go = function(i) {
-
-    if (i !== current) {
-
-      setFrame(i);
-
-      if (typeof callbacks.change === 'function') {
-        callbacks.change(current, length);
-      }
-
-    }
-
-  };
-
-  /**
-   * Play sequence
-   * @api public
-   */
-
-  var play = this.play = function() {
-    autoplay = true;
-    turn();
-  };
-
-  /**
-   * Stop sequence playng
-   * @api public
-   */
-
-  this.stop = function() {
-    autoplay = false;
-  };
-
-  /**
-   * Show object
-   * @api public
-   */
-
-  this.show = function() {
-    el.style.display = 'block';
-  };
-
-  /**
-   * Hide object
-   * @api public
-   */
-
-  this.hide = function() {
-    el.style.display = 'none';
-  };
-
-  /**
-   * Change Object options
-   *
-   * @param {Object} options
-   * @api public
-   */
-
-  this.set = function(set) {
-    for (var i = 0, key; i < mutable.length; i++) {
-      key = mutable[i];
-      options[key] = typeof set[key] !== 'undefined' ? set[key] : options[key];
-    }
-  };
-
+function Rotation(el) {
+  if (!(this instanceof Rotation)) return new Rotation(el);
+  if (typeof el === 'string') el = document.querySelector(el);
+  this.el = el;
+  this.current = 0;
+  this.cycle();
+  this.interval(75);
+  this.start(0);
+  this._ontouchstart = bind(this, 'ontouchstart');
+  this._ontouchmove = bind(this, 'ontouchmove');
+  this._ontouchend = bind(this, 'ontouchend');
+  this._onwheel = bind(this, 'onwheel');
+  this.bind();
 }
 
 /**
- * Example creator
+ * Mixin Emitter
  */
 
-function Creator(element, options) {
-
-  element = document.getElementById(element);
-
-  if (element.getAttribute('data-circlr')) {
-    return;
-  }
-
-  options = options || {};
-  options.element = element;
-
-  return new Circlr(options);
-
-}
+Emitter(Rotation.prototype);
 
 /**
- * Module exports
+ * Set scroll events
+ *
+ * @param  {Boolean} n
+ * @return {Rotation}
+ * @api public
  */
 
-module.exports = Creator;
+Rotation.prototype.scroll = function(n) {
+  this._scroll = n === undefined || n;
+  return this;
+};
+
+/**
+ * Set orientation
+ *
+ * @param  {Boolean} n
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.vertical = function(n) {
+  this._vertical = n === undefined || n;
+  return this;
+};
+
+/**
+ * Set reverse rotation
+ *
+ * @param  {Boolean} n
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.reverse = function(n) {
+  this._reverse = n === undefined || n;
+  return this;
+};
+
+/**
+ * Set cyclic rotation
+ *
+ * @param  {Boolean} n
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.cycle = function(n) {
+  this._cycle = n === undefined || n;
+  return this;
+};
+
+/**
+ * Set interval of sequence rotation
+ *
+ * @param  {Number} ms
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.interval = function(ms) {
+  this._interval = ms;
+  return this;
+};
+
+/**
+ * Start from specified frame
+ *
+ * @param  {Number} n
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.start = function(n) {
+  var children = this.children();
+
+  this.el.style.position = 'relative';
+  this.el.style.width = '100%';
+
+  for (var i = 0; i < children.length; i++) {
+    children[i].style.display = 'none';
+    children[i].style.width = '100%';
+  }
+
+  this.show(n);
+  return this;
+};
+
+/**
+ * Start sequence playback
+ *
+ * @param  {Number} n
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.play = function(n) {
+  if (this.timer) return;
+  var self = this;
+
+  function timer() {
+    if (n === undefined || n > self.current) self.next();
+    if (n < self.current) self.prev();
+    if (n === self.current) self.stop();
+  }
+
+  this.timer = setInterval(timer, this._interval);
+  return this;
+};
+
+/**
+ * Stop sequence playback
+ *
+ * @return {Rotation}
+ * @api public
+ */
+
+Rotation.prototype.stop = function() {
+  clearInterval(this.timer);
+  this.timer = null;
+  return this;
+};
+
+/**
+ * Show previous frame
+ *
+ * @api public
+ */
+
+Rotation.prototype.prev = function() {
+  this.show(this.current - 1);
+  return this;
+};
+
+/**
+ * Show next frame
+ *
+ * @api public
+ */
+
+Rotation.prototype.next = function() {
+  this.show(this.current + 1);
+  return this;
+};
+
+/**
+ * Show specified frame
+ *
+ * @param  {Number} n
+ * @return {Rotation}
+ * @api private
+ */
+
+Rotation.prototype.show = function(n) {
+  var children = this.children();
+  var len = children.length;
+
+  if (n < 0) n = this._cycle ? n + len : 0;
+  if (n > len - 1) n = this._cycle ? n - len : len - 1;
+
+  children[this.current].style.display = 'none';
+  children[n].style.display = 'block';
+
+  if (n !== this.current) this.emit('show', n, len);
+  this.current = n;
+  return this;
+};
+
+/**
+ * Bind event handlers
+ *
+ * @api private
+ */
+
+Rotation.prototype.bind = function() {
+  events.bind(this.el, 'touchstart', this._ontouchstart);
+  events.bind(this.el, 'touchmove', this._ontouchmove);
+  events.bind(this.el, 'touchend', this._ontouchend);
+  events.bind(this.el, 'mousedown', this._ontouchstart);
+  events.bind(this.el, 'mousemove', this._ontouchmove);
+  events.bind(document, 'mouseup', this._ontouchend);
+  wheel.bind(this.el, this._onwheel);
+};
+
+/**
+ * Handle touchstart
+ *
+ * @param {Object} e
+ * @api private
+ */
+
+Rotation.prototype.ontouchstart = function(e) {
+  if (this.timer) this.stop();
+
+  e = e || window.event;
+  if (e.preventDefault) e.preventDefault();
+  e.returnValue = false;
+
+  this.touch = this.getTouch(e);
+  this.currentTouched = this.current;
+};
+
+/**
+ * Handle touchmove
+ *
+ * @param {Object} e
+ * @api private
+ */
+
+Rotation.prototype.ontouchmove = function(e) {
+  if (typeof this.touch !== 'number') return;
+
+  e = e || window.event;
+  if (e.preventDefault) e.preventDefault();
+  e.returnValue = false;
+
+  var touch = this.getTouch(e);
+  var len = this.children().length;
+  var max = this.el[this._vertical ? 'clientHeight' : 'clientWidth'];
+  var offset = touch - this.touch;
+  offset = this._reverse ? -offset : offset;
+  offset = Math.floor(offset / max * len);
+
+  this.show(this.currentTouched + offset);
+};
+
+/**
+ * Handle touchend
+ *
+ * @param {Object} e
+ * @api private
+ */
+
+Rotation.prototype.ontouchend = function(e) {
+  if (typeof this.touch !== 'number') return;
+
+  e = e || window.event;
+  if (e.preventDefault) e.preventDefault();
+  e.returnValue = false;
+
+  this.touch = null;
+};
+
+/**
+ * Handle wheel
+ *
+ * @param {Object} e
+ * @api private
+ */
+
+Rotation.prototype.onwheel = function(e) {
+  if (this.timer) this.stop();
+
+  e = e || window.event;
+  if (e.preventDefault) e.preventDefault();
+  e.returnValue = false;
+
+  var delta = e.deltaY || e.detail || (-e.wheelDelta);
+  delta = delta / Math.abs(delta);
+  delta = this._reverse ? -delta : delta;
+
+  this[delta > 0 ? 'next' : 'prev']();
+};
+
+/**
+ * Get element childrens
+ *
+ * @return {Array}
+ * @api private
+ */
+
+Rotation.prototype.children = function() {
+  var nodes = this.el.childNodes;
+  var elements = [];
+
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].nodeType === 1) elements.push(nodes[i]);
+  }
+
+  return elements;
+};
+
+/**
+ * Get touch position
+ *
+ * @param  {Object} e
+ * @return {Number}
+ * @api private
+ */
+
+Rotation.prototype.getTouch = function(e) {
+  e = e.type === 'touchstart' ? e.changedTouches[0] : e;
+  return this._vertical ?
+    e.clientY - this.el.offsetTop :
+    e.clientX - this.el.offsetLeft;
+};

@@ -96,12 +96,6 @@ function Circlr(options) {
   el.setAttribute('data-circlr', true);
 
   /**
-   * DOM loader
-   */
-
-  var loader = options.loader ? document.getElementById(options.loader) : undefined;
-
-  /**
    * Frames length
    */
 
@@ -126,18 +120,6 @@ function Circlr(options) {
   var movable = false;
 
   /**
-   * Loaded images length
-   */
-
-  var loaded = [];
-
-  /**
-   * Not loaded length
-   */
-
-  var errored = [];
-
-  /**
    * Current frame
    */
 
@@ -158,9 +140,6 @@ function Circlr(options) {
    */
 
   var callbacks = {};
-
-  // all images loaded callback
-  callbacks.ready = options.ready || undefined;
 
   // turn callback
   callbacks.change = options.change || undefined;
@@ -335,113 +314,14 @@ function Circlr(options) {
   }
 
   /**
-   * Initialize events after success images loading
+   * Initialize
    * @api private
    */
 
-  function initEvents() {
-
-    // loader hide
-    if (loader) {
-      loader.style.display = 'none';
-    }
-
-    if (errored.length === 0) {
-
-      var start = normalize(options.start);
-
-      // all images loaded
-      el.getElementsByTagName('img')[start].style.display = 'block';
-      current = start;
-
-      el.style.position   = 'relative';
-      el.style.width      = '100%';
-
-      if ('ontouchstart' in window || 'onmsgesturechange' in window) {
-
-          if (options.mouse || options.scroll) {
-            events.bind(el, 'touchstart', preMove);
-            events.bind(el, 'touchmove', isMove);
-            events.bind(el, 'touchend', stopMove);
-          }
-
-      } else {
-
-        if (options.mouse) {
-          events.bind(el, 'mousedown', preMove);
-          events.bind(el, 'mousemove', isMove);
-          events.bind(document, 'mouseup', stopMove);
-        }
-
-        if (options.scroll) {
-          wheel.bind(el, scrollMove);
-        }
-
-      }
-
-      if (autoplay) {
-        play();
-      }
-
-    }
-
-    if (typeof callbacks.ready === 'function') {
-      callbacks.ready(errored);
-    }
-
-  }
-
-  /**
-   * Initialize images events
-   *
-   * @param {Object} img
-   * @api private
-   */
-
-  function loadImagesEvents(img) {
-
-    img.onload = function() {
-
-      loaded.push(this.src);
-
-      // show first frame when all images loaded
-      if (loaded.length + errored.length === length) {
-        initEvents();
-      }
-
-    };
-
-    img.onerror = function() {
-
-      errored.push(this.src);
-
-      // show first frame when images loaded
-      if (loaded.length + errored.length === length) {
-        initEvents();
-      }
-
-    };
-
-    img.onreadystatechange = function() {
-      this.onload();
-    };
-
-  }
-
-  /**
-   * Load Object images
-   * @api private
-   */
-
-  function loadImages() {
+  function init() {
 
     // adding elements
     var img;
-
-    // show loader
-    if (loader) {
-      loader.style.display = 'block';
-    }
 
     for (var i = 0; i < length; i++) {
 
@@ -451,27 +331,53 @@ function Circlr(options) {
       // set object style
       img.style.display      = 'none';
       img.style.width        = '100%';
-
-      // set object options
-      img.setAttribute('src', img.getAttribute('data-src'));
-      img.setAttribute('data-index', i);
-      img.removeAttribute('data-src');
-
-      loadImagesEvents(img);
-
     }
 
     // check elements sizes
     height = height || el.clientHeight;
     width  = width || el.clientWidth;
 
+    var start = normalize(options.start);
+
+    el.getElementsByTagName('img')[start].style.display = 'block';
+    current = start;
+
+    el.style.position   = 'relative';
+    el.style.width      = '100%';
+
+    if ('ontouchstart' in window || 'onmsgesturechange' in window) {
+
+        if (options.mouse || options.scroll) {
+          events.bind(el, 'touchstart', preMove);
+          events.bind(el, 'touchmove', isMove);
+          events.bind(el, 'touchend', stopMove);
+        }
+
+    } else {
+
+      if (options.mouse) {
+        events.bind(el, 'mousedown', preMove);
+        events.bind(el, 'mousemove', isMove);
+        events.bind(document, 'mouseup', stopMove);
+      }
+
+      if (options.scroll) {
+        wheel.bind(el, scrollMove);
+      }
+
+    }
+
+    if (autoplay) {
+      play();
+    }
+
   }
 
   /**
-   * Initialize loading
+   * Initialize
    */
 
-  loadImages();
+  init();
 
   /**
    * Change current frame

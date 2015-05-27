@@ -42,47 +42,47 @@ circlr('.container');
 circlr(document.querySelector('.container'));
 ```
 
-### #scroll()
+### .scroll()
 
   Set rotation via scroll, default `false`
 
-### #vertical()
+### .vertical()
 
   Set vertical orientation, default `false`
 
-### #reverse()
+### .reverse()
 
   Set reverse rotation, default `false`
 
-### #cycle()
+### .cycle()
 
   Set cyclic rotation, default `true`
 
-### #start(n)
+### .start(n)
 
   Set start frame, default `0`
 
-### #interval(ms)
+### .interval(ms)
 
   Set playback interval, default `75` ms
 
-### #play([n])
+### .play([n])
 
   Start sequence playback to `n` frame or start infinity playback if `n` in not defined
 
-### #stop()
+### .stop()
 
   Stop playback
 
-### #show(n)
+### .show(n)
 
   Show `n` frame
 
-### #prev()
+### .prev()
 
   Show previous frame
 
-### #next()
+### .next()
 
   Show next frame
 

@@ -7,14 +7,14 @@
   * Scroll support
   * Reverse and cyclic rotation
 
-## Instalation
+## Install
 
 ```sh
-$ npm install --save circlr
+npm install --save circlr
 ```
 
 ```sh
-$ component install andrepolischuk/circlr
+component install andrepolischuk/circlr
 ```
 
 ## Usage

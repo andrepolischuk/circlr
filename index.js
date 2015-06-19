@@ -335,7 +335,7 @@ Rotation.prototype.children = function() {
  */
 
 Rotation.prototype.getTouch = function(e) {
-  e = e.type === 'touchstart' ? e.changedTouches[0] : e;
+  e = /^touch/.test(e.type) ? e.changedTouches[0] : e;
   return this._vertical ?
     e.clientY - this.el.offsetTop :
     e.clientX - this.el.offsetLeft;

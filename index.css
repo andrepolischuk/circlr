@@ -1,0 +1,11 @@
+
+@import "bootstrap-gh-pages";
+
+.rotation {
+  cursor: move;
+  margin: 0 auto;
+}
+
+.container button {
+  margin-top: 20px;
+}

@@ -3,139 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-  <title>Circlr</title>
-
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/page.css" rel="stylesheet">
-
+  <title>circlr</title>
+  <link href="build/index.css" rel="stylesheet">
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
   <![endif]-->
-
 </head>
 <body>
-
-  <div class="container">
-
-    <div class="page-header">
-      <h2>
-        Circlr
-        <small><a href="https://github.com/andrepolischuk/circlr">Github</a></small>
-      </h2>
+  <div class="jumbotron">
+    <div class="container">
+      <h1>
+        circlr
+      </h1>
+      <p>
+        Animation rotation via scroll, mouse and touch events
+      </p>
+      <p class="text-muted">
+        2.0.2
+        &middot;
+        <a href="https://github.com/andrepolischuk/circlr">GitHub</a>
+      </p>
     </div>
-
-    <div class="row">
-
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
-
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div id="circlr">
-              <img data-src="images/00.jpg">
-              <img data-src="images/01.jpg">
-              <img data-src="images/02.jpg">
-              <img data-src="images/03.jpg">
-              <img data-src="images/04.jpg">
-              <img data-src="images/05.jpg">
-              <img data-src="images/06.jpg">
-              <img data-src="images/07.jpg">
-              <img data-src="images/08.jpg">
-              <img data-src="images/09.jpg">
-              <img data-src="images/10.jpg">
-              <img data-src="images/11.jpg">
-              <img data-src="images/12.jpg">
-              <img data-src="images/13.jpg">
-              <img data-src="images/14.jpg">
-              <img data-src="images/15.jpg">
-              <div id="loader"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-3 text-center">
-          <h4>Цикличность</h4>
-          <p>
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default" onclick="crl.set({ cycle : false });">
-                <input type="radio" name="vertical"> Нет
-              </label>
-              <label class="btn btn-default active" onclick="crl.set({ cycle : true });">
-                <input type="radio" name="vertical" checked> Да
-              </label>
-            </div>
-          </p>
-        </div>
-
-        <div class="col-sm-3 text-center">
-          <h4>Реверс</h4>
-          <p>
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default active" onclick="crl.set({ reverse : false });">
-                <input type="radio" name="vertical" checked> Нет
-              </label>
-              <label class="btn btn-default" onclick="crl.set({ reverse : true });">
-                <input type="radio" name="vertical"> Да
-              </label>
-            </div>
-          </p>
-        </div>
-
-        <div class="col-sm-6 text-center">
-          <h4>Ориентация</h4>
-          <p>
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default active" onclick="crl.set({ vertical : false });">
-                <input type="radio" name="vertical" checked> Горизонтально
-              </label>
-              <label class="btn btn-default" onclick="crl.set({ vertical : true });">
-                <input type="radio" name="vertical"> Вертикально
-              </label>
-            </div>
-          </p>
-        </div>
-
-        <div class="col-sm-4 text-center">
-          <h4>Анимированный поворот</h4>
-          <p>
-            <a href="#" class="btn btn-default" onclick="crl.turn(9); return false;">К 10-му кадру</a>
-            <a href="#" class="btn btn-default" onclick="crl.turn(0); return false;">К 1-му</a>
-          </p>
-        </div>
-
-        <div class="col-sm-4 text-center">
-          <h4>Показать</h4>
-          <p>
-            <a href="#" class="btn btn-default" onclick="crl.go(9); return false;">10-й кадр</a>
-            <a href="#" class="btn btn-default" onclick="crl.go(0); return false;">1-й</a>
-          </p>
-        </div>
-
-        <div class="col-sm-4 text-center">
-          <h4>Автокручение</h4>
-          <p>
-            <a href="#" class="btn btn-default" onclick="crl.play(); return false;">Начать</a>
-            <a href="#" class="btn btn-default" onclick="crl.stop(); return false;">Остановить</a>
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <script src="https://cdn.rawgit.com/andrepolischuk/circlr/1.2.0/circlr.min.js"></script>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+        <div class="rotation">
+          <img src="images/00.jpg">
+          <img src="images/01.jpg">
+          <img src="images/02.jpg">
+          <img src="images/03.jpg">
+          <img src="images/04.jpg">
+          <img src="images/05.jpg">
+          <img src="images/06.jpg">
+          <img src="images/07.jpg">
+          <img src="images/08.jpg">
+          <img src="images/09.jpg">
+          <img src="images/10.jpg">
+          <img src="images/11.jpg">
+          <img src="images/12.jpg">
+          <img src="images/13.jpg">
+          <img src="images/14.jpg">
+          <img src="images/15.jpg">
+        </div>
+        <button class="btn btn-default btn-cycle active">Cycle</button>
+        <button class="btn btn-default btn-reverse">Reverse</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-default btn-prev">Previous</button>
+        <button class="btn btn-default btn-next">Next</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-default btn-play">Play</button>
+        <button class="btn btn-default btn-play-to">Play to 0</button>
+      </div>
+    </div>
+  </div>
 
-  <script type="text/javascript">
-    var crl = circlr('circlr', {
-      scroll : true,
-      loader : 'loader'
-    });
-  </script>
-
+  <script src="build/index.js"></script>
 </body>
 </html>

@@ -123,7 +123,7 @@ Rotation.prototype.start = function(n) {
   this.el.style.position = 'relative';
   this.el.style.width = '100%';
 
-  for (var i = 0; i < children.length; i++) {
+  for (var i = 0, len = children.length; i < len; i++) {
     children[i].style.display = 'none';
     children[i].style.width = '100%';
   }
@@ -319,7 +319,7 @@ Rotation.prototype.children = function() {
   var nodes = this.el.childNodes;
   var elements = [];
 
-  for (var i = 0; i < nodes.length; i++) {
+  for (var i = 0, len = nodes.length; i < len; i++) {
     if (nodes[i].nodeType === 1) elements.push(nodes[i]);
   }
 

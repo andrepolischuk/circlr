@@ -5,7 +5,7 @@
   "repository": "andrepolischuk/circlr",
   "dependencies": {
     "bootstrap-gh-pages": "^0.2.1",
-    "circlr": "^2.0.2"
+    "circlr": "^2.0.3"
   },
   "devDependencies": {
     "babelify": "^6.1.2",

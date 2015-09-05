@@ -14,7 +14,6 @@ var btnPrev = document.querySelector('.btn-prev');
 var btnNext = document.querySelector('.btn-next');
 var btnPlay = document.querySelector('.btn-play');
 var btnPlayTo = document.querySelector('.btn-play-to');
-
 var camera = (0, _circlr2['default'])(el).scroll();
 
 btnCycle.addEventListener('click', function (e) {
@@ -187,7 +186,7 @@ Rotation.prototype.start = function(n) {
   this.el.style.position = 'relative';
   this.el.style.width = '100%';
 
-  for (var i = 0; i < children.length; i++) {
+  for (var i = 0, len = children.length; i < len; i++) {
     children[i].style.display = 'none';
     children[i].style.width = '100%';
   }
@@ -383,7 +382,7 @@ Rotation.prototype.children = function() {
   var nodes = this.el.childNodes;
   var elements = [];
 
-  for (var i = 0; i < nodes.length; i++) {
+  for (var i = 0, len = nodes.length; i < len; i++) {
     if (nodes[i].nodeType === 1) elements.push(nodes[i]);
   }
 
@@ -405,7 +404,7 @@ Rotation.prototype.getTouch = function(e) {
     e.clientX - this.el.offsetLeft;
 };
 
-},{"bind":3,"emitter":4,"event":5,"eventwheel":6}],3:[function(require,module,exports){
+},{"bind":3,"emitter":4,"event":6,"eventwheel":5}],3:[function(require,module,exports){
 /**
  * Slice reference.
  */
@@ -594,42 +593,6 @@ Emitter.prototype.hasListeners = function(event){
 };
 
 },{}],5:[function(require,module,exports){
-var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
-    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
-    prefix = bind !== 'addEventListener' ? 'on' : '';
-
-/**
- * Bind `el` event `type` to `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.bind = function(el, type, fn, capture){
-  el[bind](prefix + type, fn, capture || false);
-  return fn;
-};
-
-/**
- * Unbind `el` event `type`'s callback `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.unbind = function(el, type, fn, capture){
-  el[unbind](prefix + type, fn, capture || false);
-  return fn;
-};
-},{}],6:[function(require,module,exports){
 
 'use strict';
 
@@ -704,4 +667,40 @@ module.exports.unbind = function(element, fn, capture) {
   return events.unbind(element, wheelEvent, fn, capture || false);
 };
 
-},{"component-event":5,"event":5}]},{},[1]);
+},{"component-event":6,"event":6}],6:[function(require,module,exports){
+var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
+    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
+    prefix = bind !== 'addEventListener' ? 'on' : '';
+
+/**
+ * Bind `el` event `type` to `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.bind = function(el, type, fn, capture){
+  el[bind](prefix + type, fn, capture || false);
+  return fn;
+};
+
+/**
+ * Unbind `el` event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.unbind = function(el, type, fn, capture){
+  el[unbind](prefix + type, fn, capture || false);
+  return fn;
+};
+},{}]},{},[1]);

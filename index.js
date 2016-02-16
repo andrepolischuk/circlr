@@ -302,8 +302,7 @@ Rotation.prototype.onwheel = function(e) {
   e.returnValue = false;
 
   var delta = e.deltaY || e.detail || (-e.wheelDelta);
-  var absDelta = Math.abs(delta);
-  delta = absDelta !== 0 ? delta / Math.abs(delta) : delta;
+  delta = delta !== 0 ? delta / Math.abs(delta) : delta;
   delta = this._reverse ? -delta : delta;
 
   this[delta > 0 ? 'next' : 'prev']();

@@ -13,10 +13,6 @@
 npm install --save circlr
 ```
 
-```sh
-component install andrepolischuk/circlr
-```
-
 ## Usage
 
 ```js

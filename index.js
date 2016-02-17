@@ -5,9 +5,9 @@
  * Module dependencies
  */
 
-var bind = require('bind');
-var Emitter = require('emitter');
-var events = require('event');
+var bind = require('component-bind');
+var Emitter = require('component-emitter');
+var events = require('component-event');
 var wheel = require('eventwheel');
 
 /**

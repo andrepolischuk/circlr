@@ -14,11 +14,6 @@
     "component-emitter": "^1.2.0",
     "component-event": "^0.1.4"
   },
-  "browser": {
-    "bind": "component-bind",
-    "emitter": "component-emitter",
-    "event": "component-event"
-  },
   "main": "index.js",
   "author": "Andrey Polischuk <andre.polischuk@gmail.com>",
   "license": "MIT"

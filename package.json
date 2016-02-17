@@ -13,6 +13,9 @@
     "component-emitter": "^1.2.0"
   },
   "main": "index.js",
+  "scripts": {
+    "postpublish": "git push --follow-tags"
+  },
   "author": "Andrey Polischuk <andre.polischuk@gmail.com>",
   "license": "MIT"
 }

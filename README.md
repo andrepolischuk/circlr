@@ -1,11 +1,11 @@
 # circlr
 
-  > Animation rotation via scroll, mouse and touch events
+> Animation rotation via scroll, mouse and touch events
 
-  * Horizontal or vertical orientation
-  * Touch events support
-  * Scroll support
-  * Reverse and cyclic rotation
+* Horizontal or vertical orientation
+* Touch events support
+* Scroll support
+* Reverse and cyclic rotation
 
 ## Install
 
@@ -16,13 +16,14 @@ npm install --save circlr
 ## Usage
 
 ```js
-var circlr = require('circlr');
-var el = document.querySelector('.container');
+import circlr from 'circlr';
+
+const el = document.querySelector('.container');
 
 circlr(el)
-  .scroll()
+  .scroll(true)
   .play()
-  .on('show', function(n) {
+  .on('show', n => {
 
   });
 ```
@@ -31,69 +32,106 @@ circlr(el)
 
 ### circlr(el)
 
-  Create circular rotation for `el` childrens
+Create rotation instance.
 
-```js
-circlr('.container');
-circlr(document.querySelector('.container'));
-```
+#### el
 
-### .scroll()
+Type: `string`, `element`
 
-  Set rotation via scroll, default `false`
+Element.
 
-### .vertical()
+### .scroll(n)
 
-  Set vertical orientation, default `false`
+#### n
 
-### .reverse()
+Type: `boolean`
 
-  Set reverse rotation, default `false`
+Rotation via scroll flag.
 
-### .cycle()
+### .vertical(n)
 
-  Set cyclic rotation, default `true`
+#### n
+
+Type: `boolean`
+
+Vertical orientation flag.
+
+### .reverse(n)
+
+#### n
+
+Type: `boolean`
+
+Reverse rotation flag.
+
+### .cycle(n)
+
+#### n
+
+Type: `boolean`
+
+Cyclic rotation flag, default `true`.
 
 ### .start(n)
 
-  Set start frame, default `0`
+#### n
+
+Type: `number`
+
+Start frame, default `0`.
 
 ### .interval(ms)
 
-  Set playback interval, default `75` ms
+#### n
+
+Type: `number`
+
+Playback interval, default `75` ms.
 
 ### .play([n])
 
-  Start sequence playback to `n` frame or start infinity playback if `n` in not defined
+Start sequence playback.
+
+#### n
+
+Type: `number`
+
+Frame number for playback to him or infinity playback if number in not specified.
 
 ### .stop()
 
-  Stop playback
+Stop playback.
 
 ### .show(n)
 
-  Show `n` frame
+Show specified frame.
+
+#### n
+
+Type: `number`
+
+Frame number.
 
 ### .prev()
 
-  Show previous frame
+Show previous frame.
 
 ### .next()
 
-  Show next frame
+Show next frame.
 
 ## Events
 
-  * `show`, when frame is showed
+* `show`, when frame is showed
 
 ## Support
 
-  * Internet Explorer 7+
-  * Chrome
-  * Safari
-  * Firefox
-  * Opera
+* Internet Explorer 9+
+* Chrome
+* Safari
+* Firefox
+* Opera
 
 ## License
 
-  MIT
+MIT

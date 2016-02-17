@@ -1,27 +1,10 @@
-
 'use strict';
-
-/**
- * Module dependencies
- */
-
 var bind = require('component-bind');
 var Emitter = require('component-emitter');
 var events = require('component-event');
 var wheel = require('eventwheel');
 
-/**
- * Expose rotation
- */
-
 module.exports = Rotation;
-
-/**
- * Rotation
- *
- * @param {Element} el
- * @api public
- */
 
 function Rotation(el) {
   if (!(this instanceof Rotation)) return new Rotation(el);
@@ -31,95 +14,42 @@ function Rotation(el) {
   this.cycle();
   this.interval(75);
   this.start(0);
-  this._ontouchstart = bind(this, 'ontouchstart');
-  this._ontouchmove = bind(this, 'ontouchmove');
-  this._ontouchend = bind(this, 'ontouchend');
-  this._onwheel = bind(this, 'onwheel');
+  this.onTouchStart = bind(this, 'onTouchStart');
+  this.onTouchMove = bind(this, 'onTouchMove');
+  this.onTouchEnd = bind(this, 'onTouchEnd');
+  this.onWheel = bind(this, 'onWheel');
   this.bind();
 }
 
-/**
- * Mixin Emitter
- */
-
 Emitter(Rotation.prototype);
 
-/**
- * Set scroll events
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.scroll = function(n) {
+Rotation.prototype.scroll = function (n) {
   this._scroll = n === undefined || n;
   return this;
 };
 
-/**
- * Set orientation
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.vertical = function(n) {
+Rotation.prototype.vertical = function (n) {
   this._vertical = n === undefined || n;
   return this;
 };
 
-/**
- * Set reverse rotation
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.reverse = function(n) {
+Rotation.prototype.reverse = function (n) {
   this._reverse = n === undefined || n;
   return this;
 };
 
-/**
- * Set cyclic rotation
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.cycle = function(n) {
+Rotation.prototype.cycle = function (n) {
   this._cycle = n === undefined || n;
   return this;
 };
 
-/**
- * Set interval of sequence rotation
- *
- * @param  {Number} ms
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.interval = function(ms) {
+Rotation.prototype.interval = function (ms) {
   this._interval = ms;
   return this;
 };
 
-/**
- * Start from specified frame
- *
- * @param  {Number} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.start = function(n) {
+Rotation.prototype.start = function (n) {
   var children = this.children();
-
   this.el.style.position = 'relative';
   this.el.style.width = '100%';
 
@@ -132,15 +62,7 @@ Rotation.prototype.start = function(n) {
   return this;
 };
 
-/**
- * Start sequence playback
- *
- * @param  {Number} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.play = function(n) {
+Rotation.prototype.play = function (n) {
   if (this.timer) return;
   var self = this;
 
@@ -154,168 +76,87 @@ Rotation.prototype.play = function(n) {
   return this;
 };
 
-/**
- * Stop sequence playback
- *
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.stop = function() {
+Rotation.prototype.stop = function () {
   clearInterval(this.timer);
   this.timer = null;
   return this;
 };
 
-/**
- * Show previous frame
- *
- * @api public
- */
-
-Rotation.prototype.prev = function() {
+Rotation.prototype.prev = function () {
   this.show(this.current - 1);
   return this;
 };
 
-/**
- * Show next frame
- *
- * @api public
- */
-
-Rotation.prototype.next = function() {
+Rotation.prototype.next = function () {
   this.show(this.current + 1);
   return this;
 };
 
-/**
- * Show specified frame
- *
- * @param  {Number} n
- * @return {Rotation}
- * @api private
- */
-
-Rotation.prototype.show = function(n) {
+Rotation.prototype.show = function (n) {
   var children = this.children();
   var len = children.length;
-
   if (n < 0) n = this._cycle ? n + len : 0;
   if (n > len - 1) n = this._cycle ? n - len : len - 1;
-
   children[this.current].style.display = 'none';
   children[n].style.display = 'block';
-
   if (n !== this.current) this.emit('show', n, len);
   this.current = n;
   return this;
 };
 
-/**
- * Bind event handlers
- *
- * @api private
- */
-
-Rotation.prototype.bind = function() {
-  events.bind(this.el, 'touchstart', this._ontouchstart);
-  events.bind(this.el, 'touchmove', this._ontouchmove);
-  events.bind(this.el, 'touchend', this._ontouchend);
-  events.bind(this.el, 'mousedown', this._ontouchstart);
-  events.bind(this.el, 'mousemove', this._ontouchmove);
-  events.bind(document, 'mouseup', this._ontouchend);
-  wheel.bind(this.el, this._onwheel);
+Rotation.prototype.bind = function () {
+  events.bind(this.el, 'touchstart', this.onTouchStart);
+  events.bind(this.el, 'touchmove', this.onTouchMove);
+  events.bind(this.el, 'touchend', this.onTouchEnd);
+  events.bind(this.el, 'mousedown', this.onTouchStart);
+  events.bind(this.el, 'mousemove', this.onTouchMove);
+  events.bind(document, 'mouseup', this.onTouchEnd);
+  wheel.bind(this.el, this.onWheel);
 };
 
-/**
- * Handle touchstart
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.ontouchstart = function(e) {
+Rotation.prototype.onTouchStart = function (event) {
   if (this.timer) this.stop();
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
-  this.touch = this.getTouch(e);
+  event = event || window.event;
+  if (event.preventDefault) event.preventDefault();
+  event.returnValue = false;
+  this.touch = this.getTouch(event);
   this.currentTouched = this.current;
 };
 
-/**
- * Handle touchmove
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.ontouchmove = function(e) {
+Rotation.prototype.onTouchMove = function (event) {
   if (typeof this.touch !== 'number') return;
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
-  var touch = this.getTouch(e);
+  event = event || window.event;
+  if (event.preventDefault) event.preventDefault();
+  event.returnValue = false;
+  var touch = this.getTouch(event);
   var len = this.children().length;
   var max = this.el[this._vertical ? 'clientHeight' : 'clientWidth'];
   var offset = touch - this.touch;
   offset = this._reverse ? -offset : offset;
   offset = Math.floor(offset / max * len);
-
   this.show(this.currentTouched + offset);
 };
 
-/**
- * Handle touchend
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.ontouchend = function(e) {
+Rotation.prototype.onTouchEnd = function (event) {
   if (typeof this.touch !== 'number') return;
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
+  event = event || window.event;
+  if (event.preventDefault) event.preventDefault();
+  event.returnValue = false;
   this.touch = null;
 };
 
-/**
- * Handle wheel
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.onwheel = function(e) {
+Rotation.prototype.onWheel = function (event) {
   if (this.timer) this.stop();
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
-  var delta = e.deltaY || e.detail || (-e.wheelDelta);
+  event = event || window.event;
+  if (event.preventDefault) event.preventDefault();
+  event.returnValue = false;
+  var delta = event.deltaY || event.detail || (-event.wheelDelta);
   delta = delta !== 0 ? delta / Math.abs(delta) : delta;
   delta = this._reverse ? -delta : delta;
-
   this[delta > 0 ? 'next' : 'prev']();
 };
 
-/**
- * Get element childrens
- *
- * @return {Array}
- * @api private
- */
-
-Rotation.prototype.children = function() {
+Rotation.prototype.children = function () {
   var nodes = this.el.childNodes;
   var elements = [];
 
@@ -326,17 +167,10 @@ Rotation.prototype.children = function() {
   return elements;
 };
 
-/**
- * Get touch position
- *
- * @param  {Object} e
- * @return {Number}
- * @api private
- */
+Rotation.prototype.getTouch = function (event) {
+  event = /^touch/.test(event.type) ? event.changedTouches[0] : event;
 
-Rotation.prototype.getTouch = function(e) {
-  e = /^touch/.test(e.type) ? e.changedTouches[0] : e;
   return this._vertical ?
-    e.clientY - this.el.offsetTop :
-    e.clientX - this.el.offsetLeft;
+    event.clientY - this.el.offsetTop :
+    event.clientX - this.el.offsetLeft;
 };

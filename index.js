@@ -9,7 +9,7 @@ function Rotation(el) {
   if (typeof el === 'string') el = document.querySelector(el);
   this.el = el;
   this.current = 0;
-  this.cycle();
+  this.cycle(true);
   this.interval(75);
   this.start(0);
   this.onTouchStart = this.onTouchStart.bind(this);
@@ -22,22 +22,22 @@ function Rotation(el) {
 Emitter(Rotation.prototype);
 
 Rotation.prototype.scroll = function (n) {
-  this._scroll = n === undefined || n;
+  this._scroll = n;
   return this;
 };
 
 Rotation.prototype.vertical = function (n) {
-  this._vertical = n === undefined || n;
+  this._vertical = n;
   return this;
 };
 
 Rotation.prototype.reverse = function (n) {
-  this._reverse = n === undefined || n;
+  this._reverse = n;
   return this;
 };
 
 Rotation.prototype.cycle = function (n) {
-  this._cycle = n === undefined || n;
+  this._cycle = n;
   return this;
 };
 
@@ -81,13 +81,11 @@ Rotation.prototype.stop = function () {
 };
 
 Rotation.prototype.prev = function () {
-  this.show(this.current - 1);
-  return this;
+  return this.show(this.current - 1);
 };
 
 Rotation.prototype.next = function () {
-  this.show(this.current + 1);
-  return this;
+  return this.show(this.current + 1);
 };
 
 Rotation.prototype.show = function (n) {

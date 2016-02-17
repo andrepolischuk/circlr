@@ -1,7 +1,5 @@
 'use strict';
-var bind = require('component-bind');
 var Emitter = require('component-emitter');
-var events = require('component-event');
 var wheel = require('eventwheel');
 
 module.exports = Rotation;
@@ -14,10 +12,10 @@ function Rotation(el) {
   this.cycle();
   this.interval(75);
   this.start(0);
-  this.onTouchStart = bind(this, 'onTouchStart');
-  this.onTouchMove = bind(this, 'onTouchMove');
-  this.onTouchEnd = bind(this, 'onTouchEnd');
-  this.onWheel = bind(this, 'onWheel');
+  this.onTouchStart = this.onTouchStart.bind(this);
+  this.onTouchMove = this.onTouchMove.bind(this);
+  this.onTouchEnd = this.onTouchEnd.bind(this);
+  this.onWheel = this.onWheel.bind(this);
   this.bind();
 }
 
@@ -105,29 +103,25 @@ Rotation.prototype.show = function (n) {
 };
 
 Rotation.prototype.bind = function () {
-  events.bind(this.el, 'touchstart', this.onTouchStart);
-  events.bind(this.el, 'touchmove', this.onTouchMove);
-  events.bind(this.el, 'touchend', this.onTouchEnd);
-  events.bind(this.el, 'mousedown', this.onTouchStart);
-  events.bind(this.el, 'mousemove', this.onTouchMove);
-  events.bind(document, 'mouseup', this.onTouchEnd);
+  this.el.addEventListener('touchstart', this.onTouchStart, false);
+  this.el.addEventListener('touchmove', this.onTouchMove, false);
+  this.el.addEventListener('touchend', this.onTouchEnd, false);
+  this.el.addEventListener('mousedown', this.onTouchStart, false);
+  this.el.addEventListener('mousemove', this.onTouchMove, false);
+  document.addEventListener('mouseup', this.onTouchEnd, false);
   wheel.bind(this.el, this.onWheel);
 };
 
 Rotation.prototype.onTouchStart = function (event) {
   if (this.timer) this.stop();
-  event = event || window.event;
-  if (event.preventDefault) event.preventDefault();
-  event.returnValue = false;
+  event.preventDefault();
   this.touch = this.getTouch(event);
   this.currentTouched = this.current;
 };
 
 Rotation.prototype.onTouchMove = function (event) {
   if (typeof this.touch !== 'number') return;
-  event = event || window.event;
-  if (event.preventDefault) event.preventDefault();
-  event.returnValue = false;
+  event.preventDefault();
   var touch = this.getTouch(event);
   var len = this.children().length;
   var max = this.el[this._vertical ? 'clientHeight' : 'clientWidth'];
@@ -139,17 +133,13 @@ Rotation.prototype.onTouchMove = function (event) {
 
 Rotation.prototype.onTouchEnd = function (event) {
   if (typeof this.touch !== 'number') return;
-  event = event || window.event;
-  if (event.preventDefault) event.preventDefault();
-  event.returnValue = false;
+  event.preventDefault();
   this.touch = null;
 };
 
 Rotation.prototype.onWheel = function (event) {
   if (this.timer) this.stop();
-  event = event || window.event;
-  if (event.preventDefault) event.preventDefault();
-  event.returnValue = false;
+  event.preventDefault();
   var delta = event.deltaY || event.detail || (-event.wheelDelta);
   delta = delta !== 0 ? delta / Math.abs(delta) : delta;
   delta = this._reverse ? -delta : delta;

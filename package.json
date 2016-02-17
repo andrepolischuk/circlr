@@ -10,9 +10,7 @@
   "repository": "andrepolischuk/circlr",
   "dependencies": {
     "eventwheel": "^0.3.0",
-    "component-bind": "^1.0.0",
-    "component-emitter": "^1.2.0",
-    "component-event": "^0.1.4"
+    "component-emitter": "^1.2.0"
   },
   "main": "index.js",
   "author": "Andrey Polischuk <andre.polischuk@gmail.com>",

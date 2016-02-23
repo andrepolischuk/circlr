@@ -132,6 +132,12 @@ Show next frame.
 * Firefox
 * Opera
 
+## Related
+
+* [react-rotation][react-rotation] - react rotation component
+
 ## License
 
 MIT
+
+[react-rotation]: https://github.com/andrepolischuk/react-rotation

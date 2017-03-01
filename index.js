@@ -1,12 +1,18 @@
 import circlr from 'circlr';
 const el = document.querySelector('.rotation');
+const btnScroll  = document.querySelector('.btn-scroll');
 const btnCycle = document.querySelector('.btn-cycle');
 const btnReverse = document.querySelector('.btn-reverse');
 const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
 const btnPlay = document.querySelector('.btn-play');
 const btnPlayTo = document.querySelector('.btn-play-to');
-let camera = circlr(el).scroll();
+let camera = circlr(el).scroll(true);
+
+btnScroll.addEventListener('click', (e) => {
+  toggleActive(e.target);
+  camera.scroll(isActive(e.target));
+}, false);
 
 btnCycle.addEventListener('click', (e) => {
   toggleActive(e.target);

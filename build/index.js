@@ -8,13 +8,19 @@ var _circlr = require('circlr');
 var _circlr2 = _interopRequireDefault(_circlr);
 
 var el = document.querySelector('.rotation');
+var btnScroll = document.querySelector('.btn-scroll');
 var btnCycle = document.querySelector('.btn-cycle');
 var btnReverse = document.querySelector('.btn-reverse');
 var btnPrev = document.querySelector('.btn-prev');
 var btnNext = document.querySelector('.btn-next');
 var btnPlay = document.querySelector('.btn-play');
 var btnPlayTo = document.querySelector('.btn-play-to');
-var camera = (0, _circlr2['default'])(el).scroll();
+var camera = (0, _circlr2['default'])(el).scroll(true);
+
+btnScroll.addEventListener('click', function (e) {
+  toggleActive(e.target);
+  camera.scroll(isActive(e.target));
+}, false);
 
 btnCycle.addEventListener('click', function (e) {
   toggleActive(e.target);
@@ -61,128 +67,64 @@ function isActive(el) {
 }
 
 },{"circlr":2}],2:[function(require,module,exports){
-
 'use strict';
-
-/**
- * Module dependencies
- */
-
-var bind = require('bind');
-var Emitter = require('emitter');
-var events = require('event');
+var Emitter = require('component-emitter');
 var wheel = require('eventwheel');
 
-/**
- * Expose rotation
- */
-
 module.exports = Rotation;
-
-/**
- * Rotation
- *
- * @param {Element} el
- * @api public
- */
 
 function Rotation(el) {
   if (!(this instanceof Rotation)) return new Rotation(el);
   if (typeof el === 'string') el = document.querySelector(el);
   this.el = el;
   this.current = 0;
-  this.cycle();
+  this.cycle(true);
   this.interval(75);
   this.start(0);
-  this._ontouchstart = bind(this, 'ontouchstart');
-  this._ontouchmove = bind(this, 'ontouchmove');
-  this._ontouchend = bind(this, 'ontouchend');
-  this._onwheel = bind(this, 'onwheel');
+  this.onTouchStart = this.onTouchStart.bind(this);
+  this.onTouchMove = this.onTouchMove.bind(this);
+  this.onTouchEnd = this.onTouchEnd.bind(this);
+  this.onWheel = this.onWheel.bind(this);
   this.bind();
 }
 
-/**
- * Mixin Emitter
- */
-
 Emitter(Rotation.prototype);
 
-/**
- * Set scroll events
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
+Rotation.prototype.scroll = function (n) {
+  if (this._scroll === n) return this;
+  this._scroll = n;
 
-Rotation.prototype.scroll = function(n) {
-  this._scroll = n === undefined || n;
+  if (this._scroll) {
+    wheel.bind(this.el, this.onWheel);
+  } else {
+    wheel.unbind(this.el, this.onWheel);
+  }
+
   return this;
 };
 
-/**
- * Set orientation
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.vertical = function(n) {
-  this._vertical = n === undefined || n;
+Rotation.prototype.vertical = function (n) {
+  this._vertical = n;
   return this;
 };
 
-/**
- * Set reverse rotation
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.reverse = function(n) {
-  this._reverse = n === undefined || n;
+Rotation.prototype.reverse = function (n) {
+  this._reverse = n;
   return this;
 };
 
-/**
- * Set cyclic rotation
- *
- * @param  {Boolean} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.cycle = function(n) {
-  this._cycle = n === undefined || n;
+Rotation.prototype.cycle = function (n) {
+  this._cycle = n;
   return this;
 };
 
-/**
- * Set interval of sequence rotation
- *
- * @param  {Number} ms
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.interval = function(ms) {
+Rotation.prototype.interval = function (ms) {
   this._interval = ms;
   return this;
 };
 
-/**
- * Start from specified frame
- *
- * @param  {Number} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.start = function(n) {
+Rotation.prototype.start = function (n) {
   var children = this.children();
-
   this.el.style.position = 'relative';
   this.el.style.width = '100%';
 
@@ -195,15 +137,7 @@ Rotation.prototype.start = function(n) {
   return this;
 };
 
-/**
- * Start sequence playback
- *
- * @param  {Number} n
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.play = function(n) {
+Rotation.prototype.play = function (n) {
   if (this.timer) return;
   var self = this;
 
@@ -217,168 +151,87 @@ Rotation.prototype.play = function(n) {
   return this;
 };
 
-/**
- * Stop sequence playback
- *
- * @return {Rotation}
- * @api public
- */
-
-Rotation.prototype.stop = function() {
+Rotation.prototype.stop = function () {
   clearInterval(this.timer);
   this.timer = null;
   return this;
 };
 
-/**
- * Show previous frame
- *
- * @api public
- */
-
-Rotation.prototype.prev = function() {
-  this.show(this.current - 1);
-  return this;
+Rotation.prototype.prev = function () {
+  return this.show(this.current - 1);
 };
 
-/**
- * Show next frame
- *
- * @api public
- */
-
-Rotation.prototype.next = function() {
-  this.show(this.current + 1);
-  return this;
+Rotation.prototype.next = function () {
+  return this.show(this.current + 1);
 };
 
-/**
- * Show specified frame
- *
- * @param  {Number} n
- * @return {Rotation}
- * @api private
- */
-
-Rotation.prototype.show = function(n) {
+Rotation.prototype.show = function (n) {
   var children = this.children();
   var len = children.length;
-
   if (n < 0) n = this._cycle ? n + len : 0;
   if (n > len - 1) n = this._cycle ? n - len : len - 1;
-
   children[this.current].style.display = 'none';
   children[n].style.display = 'block';
-
   if (n !== this.current) this.emit('show', n, len);
   this.current = n;
   return this;
 };
 
-/**
- * Bind event handlers
- *
- * @api private
- */
-
-Rotation.prototype.bind = function() {
-  events.bind(this.el, 'touchstart', this._ontouchstart);
-  events.bind(this.el, 'touchmove', this._ontouchmove);
-  events.bind(this.el, 'touchend', this._ontouchend);
-  events.bind(this.el, 'mousedown', this._ontouchstart);
-  events.bind(this.el, 'mousemove', this._ontouchmove);
-  events.bind(document, 'mouseup', this._ontouchend);
-  wheel.bind(this.el, this._onwheel);
+Rotation.prototype.bind = function () {
+  this.el.addEventListener('touchstart', this.onTouchStart, false);
+  this.el.addEventListener('touchmove', this.onTouchMove, false);
+  this.el.addEventListener('touchend', this.onTouchEnd, false);
+  this.el.addEventListener('mousedown', this.onTouchStart, false);
+  this.el.addEventListener('mousemove', this.onTouchMove, false);
+  document.addEventListener('mouseup', this.onTouchEnd, false);
+  if (this._scroll) wheel.bind(this.el, this.onWheel);
 };
 
-/**
- * Handle touchstart
- *
- * @param {Object} e
- * @api private
- */
+Rotation.prototype.unbind = function () {
+  this.el.removeEventListener('touchstart', this.onTouchStart, false);
+  this.el.removeEventListener('touchmove', this.onTouchMove, false);
+  this.el.removeEventListener('touchend', this.onTouchEnd, false);
+  this.el.removeEventListener('mousedown', this.onTouchStart, false);
+  this.el.removeEventListener('mousemove', this.onTouchMove, false);
+  document.removeEventListener('mouseup', this.onTouchEnd, false);
+  if (this._scroll) wheel.unbind(this.el, this.onWheel);
+};
 
-Rotation.prototype.ontouchstart = function(e) {
+Rotation.prototype.onTouchStart = function (event) {
   if (this.timer) this.stop();
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
-  this.touch = this.getTouch(e);
+  event.preventDefault();
+  this.touch = this.getTouch(event);
   this.currentTouched = this.current;
 };
 
-/**
- * Handle touchmove
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.ontouchmove = function(e) {
+Rotation.prototype.onTouchMove = function (event) {
   if (typeof this.touch !== 'number') return;
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
-  var touch = this.getTouch(e);
+  event.preventDefault();
+  var touch = this.getTouch(event);
   var len = this.children().length;
   var max = this.el[this._vertical ? 'clientHeight' : 'clientWidth'];
   var offset = touch - this.touch;
   offset = this._reverse ? -offset : offset;
   offset = Math.floor(offset / max * len);
-
   this.show(this.currentTouched + offset);
 };
 
-/**
- * Handle touchend
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.ontouchend = function(e) {
+Rotation.prototype.onTouchEnd = function (event) {
   if (typeof this.touch !== 'number') return;
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
+  event.preventDefault();
   this.touch = null;
 };
 
-/**
- * Handle wheel
- *
- * @param {Object} e
- * @api private
- */
-
-Rotation.prototype.onwheel = function(e) {
+Rotation.prototype.onWheel = function (event) {
   if (this.timer) this.stop();
-
-  e = e || window.event;
-  if (e.preventDefault) e.preventDefault();
-  e.returnValue = false;
-
-  var delta = e.deltaY || e.detail || (-e.wheelDelta);
-  delta = delta / Math.abs(delta);
+  event.preventDefault();
+  var delta = event.deltaY || event.detail || (-event.wheelDelta);
+  delta = delta !== 0 ? delta / Math.abs(delta) : delta;
   delta = this._reverse ? -delta : delta;
-
   this[delta > 0 ? 'next' : 'prev']();
 };
 
-/**
- * Get element childrens
- *
- * @return {Array}
- * @api private
- */
-
-Rotation.prototype.children = function() {
+Rotation.prototype.children = function () {
   var nodes = this.el.childNodes;
   var elements = [];
 
@@ -389,53 +242,23 @@ Rotation.prototype.children = function() {
   return elements;
 };
 
-/**
- * Get touch position
- *
- * @param  {Object} e
- * @return {Number}
- * @api private
- */
+Rotation.prototype.getTouch = function (event) {
+  event = /^touch/.test(event.type) ? event.changedTouches[0] : event;
 
-Rotation.prototype.getTouch = function(e) {
-  e = /^touch/.test(e.type) ? e.changedTouches[0] : e;
   return this._vertical ?
-    e.clientY - this.el.offsetTop :
-    e.clientX - this.el.offsetLeft;
+    event.clientY - this.el.offsetTop :
+    event.clientX - this.el.offsetLeft;
 };
 
-},{"bind":3,"emitter":4,"event":6,"eventwheel":5}],3:[function(require,module,exports){
-/**
- * Slice reference.
- */
-
-var slice = [].slice;
-
-/**
- * Bind `obj` to `fn`.
- *
- * @param {Object} obj
- * @param {Function|String} fn or string
- * @return {Function}
- * @api public
- */
-
-module.exports = function(obj, fn){
-  if ('string' == typeof fn) fn = obj[fn];
-  if ('function' != typeof fn) throw new Error('bind() requires a function');
-  var args = slice.call(arguments, 2);
-  return function(){
-    return fn.apply(obj, args.concat(slice.call(arguments)));
-  }
-};
-
-},{}],4:[function(require,module,exports){
+},{"component-emitter":3,"eventwheel":5}],3:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
  */
 
-module.exports = Emitter;
+if (typeof module !== 'undefined') {
+  module.exports = Emitter;
+}
 
 /**
  * Initialize a new `Emitter`.
@@ -592,6 +415,42 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
+},{}],4:[function(require,module,exports){
+var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
+    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
+    prefix = bind !== 'addEventListener' ? 'on' : '';
+
+/**
+ * Bind `el` event `type` to `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.bind = function(el, type, fn, capture){
+  el[bind](prefix + type, fn, capture || false);
+  return fn;
+};
+
+/**
+ * Unbind `el` event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.unbind = function(el, type, fn, capture){
+  el[unbind](prefix + type, fn, capture || false);
+  return fn;
+};
 },{}],5:[function(require,module,exports){
 
 'use strict';
@@ -667,40 +526,4 @@ module.exports.unbind = function(element, fn, capture) {
   return events.unbind(element, wheelEvent, fn, capture || false);
 };
 
-},{"component-event":6,"event":6}],6:[function(require,module,exports){
-var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
-    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
-    prefix = bind !== 'addEventListener' ? 'on' : '';
-
-/**
- * Bind `el` event `type` to `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.bind = function(el, type, fn, capture){
-  el[bind](prefix + type, fn, capture || false);
-  return fn;
-};
-
-/**
- * Unbind `el` event `type`'s callback `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.unbind = function(el, type, fn, capture){
-  el[unbind](prefix + type, fn, capture || false);
-  return fn;
-};
-},{}]},{},[1]);
+},{"component-event":4,"event":4}]},{},[1]);

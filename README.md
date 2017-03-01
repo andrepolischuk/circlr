@@ -120,6 +120,10 @@ Show previous frame.
 
 Show next frame.
 
+### .unbind()
+
+Unbind rotation events.
+
 ## Events
 
 * `show`, when frame is showed

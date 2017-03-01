@@ -115,6 +115,17 @@ Rotation.prototype.bind = function () {
   this.el.addEventListener('mousedown', this.onTouchStart, false);
   this.el.addEventListener('mousemove', this.onTouchMove, false);
   document.addEventListener('mouseup', this.onTouchEnd, false);
+  if (this._scroll) wheel.bind(this.el, this.onWheel);
+};
+
+Rotation.prototype.unbind = function () {
+  this.el.removeEventListener('touchstart', this.onTouchStart, false);
+  this.el.removeEventListener('touchmove', this.onTouchMove, false);
+  this.el.removeEventListener('touchend', this.onTouchEnd, false);
+  this.el.removeEventListener('mousedown', this.onTouchStart, false);
+  this.el.removeEventListener('mousemove', this.onTouchMove, false);
+  document.removeEventListener('mouseup', this.onTouchEnd, false);
+  if (this._scroll) wheel.unbind(this.el, this.onWheel);
 };
 
 Rotation.prototype.onTouchStart = function (event) {

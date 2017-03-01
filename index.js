@@ -22,7 +22,15 @@ function Rotation(el) {
 Emitter(Rotation.prototype);
 
 Rotation.prototype.scroll = function (n) {
+  if (this._scroll === n) return this;
   this._scroll = n;
+
+  if (this._scroll) {
+    wheel.bind(this.el, this.onWheel);
+  } else {
+    wheel.unbind(this.el, this.onWheel);
+  }
+
   return this;
 };
 
@@ -107,7 +115,6 @@ Rotation.prototype.bind = function () {
   this.el.addEventListener('mousedown', this.onTouchStart, false);
   this.el.addEventListener('mousemove', this.onTouchMove, false);
   document.addEventListener('mouseup', this.onTouchEnd, false);
-  wheel.bind(this.el, this.onWheel);
 };
 
 Rotation.prototype.onTouchStart = function (event) {

@@ -16,6 +16,6 @@
   "scripts": {
     "postpublish": "git push --follow-tags"
   },
-  "author": "Andrey Polischuk <andre.polischuk@gmail.com>",
+  "author": "Andrey Polischuk <me@andrepolischuk.com> (https://andrepolischuk.com)",
   "license": "MIT"
 }
